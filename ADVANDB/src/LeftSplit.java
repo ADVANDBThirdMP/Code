@@ -54,6 +54,13 @@ public class LeftSplit implements ActionListener {
 		
 		JRadioButton rdbtnReadrepeatable = new JRadioButton("Read-repeatable");
 		jPanel.add(rdbtnReadrepeatable, "cell 0 10,growx,aligny center");
+		
+		ButtonGroup group = new ButtonGroup();
+		group.add(rdbtnSerializable);
+		group.add(rdbtnReadcommitted);
+		group.add(rdbtnReaduncommitted);
+		group.add(rdbtnReadrepeatable);
+		
 
 	}
 

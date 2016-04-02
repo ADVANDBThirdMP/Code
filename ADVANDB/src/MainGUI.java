@@ -61,6 +61,7 @@ public class MainGUI {
 	}
 	
 	public void removeRightSplit(JPanel guiClass)
+	
 	{
 		rightJPanel.remove(guiClass);
 		frame.revalidate(); // For Java 1.7 or above
