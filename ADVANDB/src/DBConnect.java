@@ -30,9 +30,8 @@ public class DBConnect {
 	
 	//get next available productID
 	
-	public int executeQuery()
+	public int executeQuery(String query)
 	{
-		String query = "SELECT count(*) FROM hpq_alp;";
 		Integer resultCount = 1;
 		try{
 			  PreparedStatement preparedStatement = (PreparedStatement) con.prepareStatement(query);
@@ -42,7 +41,6 @@ public class DBConnect {
 			while(rs.next())
 			{
 				resultCount = rs.getInt("count(*)");
-			
 			}
 			
 
