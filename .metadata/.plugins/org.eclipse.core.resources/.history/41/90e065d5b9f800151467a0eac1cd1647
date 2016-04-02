@@ -1,0 +1,76 @@
+
+import javax.swing.*;
+
+
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import net.miginfocom.swing.MigLayout;
+
+public class RightSplit implements ActionListener {
+
+	
+	
+	
+	JPanel jPanel = new JPanel();
+	
+	private DBConnect db = new DBConnect();
+	private MainGUI mainGUI;
+
+	public RightSplit(MainGUI mainGUI) {
+
+		this.mainGUI = mainGUI;
+	
+	        JTabbedPane jtp = new JTabbedPane();
+	        jPanel.add(jtp);
+	        JPanel jp1 = new JPanel();
+	        JPanel jp2 = new JPanel();
+	        JLabel label1 = new JLabel();
+	        label1.setText("You are in area of Tab1");
+	        JLabel label2 = new JLabel();
+	        label2.setText("You are in area of Tab2");
+	        jp1.add(label1);
+	        jp2.add(label2);
+	        jtp.addTab("Tab1", jp1);
+	        jtp.addTab("Tab2", jp2);
+		
+		jPanel.setSize(800, 600);
+		
+
+	}
+
+	  public static void main(String[] args) {
+	         
+	        TabbedPane tp = new TabbedPane();
+	        tp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        tp.setVisible(true);
+	         
+	    }
+	
+	public JPanel getJPanel() {
+		return jPanel;
+	}
+
+	private class ActListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+//			if (e.getSource() == btnLogin) {
+//
+//			}
+//
+//			else {
+//		
+//			}
+		}
+
+	}
+
+	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+}

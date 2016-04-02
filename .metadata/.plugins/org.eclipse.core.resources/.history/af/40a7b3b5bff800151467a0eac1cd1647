@@ -1,0 +1,85 @@
+
+import javax.swing.*;
+
+
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import net.miginfocom.swing.MigLayout;
+
+public class LeftSplit implements ActionListener {
+
+	JPanel jPanel = new JPanel();
+	
+	private DBConnect db = new DBConnect();
+	private MainGUI mainGUI;
+
+	public LeftSplit(MainGUI mainGUI) {
+
+		this.mainGUI = mainGUI;
+	
+		jPanel.setSize(200, 600);
+		jPanel.setLayout(new MigLayout("", "[116px]", "[23px][23px][23px][23px][23px][23px][][][][][]"));
+		
+		JLabel lblControlPanel = new JLabel("Control Panel");
+		lblControlPanel.setFont(new Font("Tahoma", Font.BOLD, 18));
+		jPanel.add(lblControlPanel, "cell 0 0");
+		
+		JLabel label = new JLabel("--------------------------------------------");
+		jPanel.add(label, "cell 0 1,aligny top");
+		
+		JLabel lblArea = new JLabel("AREA");
+		lblArea.setFont(new Font("Tahoma", Font.BOLD, 14));
+		jPanel.add(lblArea, "cell 0 2");
+		
+		JCheckBox chckbxMarinduque = new JCheckBox("Marinduque");
+		jPanel.add(chckbxMarinduque, "cell 0 3,growx,aligny center");
+		
+		JCheckBox chckbxPalawan = new JCheckBox("Palawan");
+		jPanel.add(chckbxPalawan, "cell 0 4,growx,aligny center");
+		
+		JLabel lblIsolationLevel = new JLabel("ISOLATION LEVEL");
+		lblIsolationLevel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		jPanel.add(lblIsolationLevel, "cell 0 6");
+		
+		JRadioButton rdbtnSerializable = new JRadioButton("Serializable");
+		jPanel.add(rdbtnSerializable, "cell 0 7,growx,aligny center");
+		
+		JRadioButton rdbtnReadcommitted = new JRadioButton("Read-committed");
+		jPanel.add(rdbtnReadcommitted, "cell 0 8,growx,aligny center");
+		
+		JRadioButton rdbtnReaduncommitted = new JRadioButton("Read-uncommitted");
+		jPanel.add(rdbtnReaduncommitted, "cell 0 9,growx,aligny center");
+		
+		JRadioButton rdbtnReadrepeatable = new JRadioButton("Read-repeatable");
+		jPanel.add(rdbtnReadrepeatable, "cell 0 10,growx,aligny center");
+
+	}
+
+	public JPanel getJPanel() {
+		return jPanel;
+	}
+
+	private class ActListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+//			if (e.getSource() == btnLogin) {
+//
+//			}
+//
+//			else {
+//		
+//			}
+		}
+
+	}
+
+	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+}

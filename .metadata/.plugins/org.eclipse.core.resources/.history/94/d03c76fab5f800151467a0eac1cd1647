@@ -1,0 +1,59 @@
+
+import javax.swing.*;
+
+import Branch.Branch;
+import DB.DBConnect;
+import GUI.MainGUI;
+import GUI.ControlPanel.GUIClientLandingPanel;
+import GUI.Product.AddProduct;
+import GUI.Receipt.POSReceipt;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import net.miginfocom.swing.MigLayout;
+
+public class LeftSplit implements ActionListener {
+
+	JPanel jPanel = new JPanel();
+	private JButton btnLogin = new JButton("Login");
+	private JTextField txtUsername;
+	private JPasswordField txtPassword;
+	private final JLabel lblPassword = new JLabel("Password:");
+
+	private DBConnect db = new DBConnect();
+	private MainGUI mainGUI;
+
+	public LeftSplit(MainGUI mainGUI) {
+
+		this.mainGUI = mainGUI;
+	
+
+	}
+
+	public JPanel getJPanel() {
+		return jPanel;
+	}
+
+	private class ActListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+			if (e.getSource() == btnLogin) {
+
+			}
+
+			else {
+		
+			}
+		}
+
+	}
+
+	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+}

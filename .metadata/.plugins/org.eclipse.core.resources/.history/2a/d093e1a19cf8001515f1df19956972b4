@@ -1,0 +1,59 @@
+package DB;
+import java.sql.Date;
+import java.sql.DriverManager;
+
+
+
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
+import com.mysql.jdbc.PreparedStatement;
+
+public class DBConnect {
+
+	private java.sql.Connection con;
+	private ResultSet rs;
+	
+	public DBConnect(){
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/introse_mp","root","");
+
+			
+			con.createStatement();
+			
+		}catch(Exception ex){
+			System.out.println("Error: " +ex);
+		}
+	}
+	
+	//get next available productID
+	
+	public int getNextAvailableProductID()
+	{
+		String query = "select MAX(productID) from products";
+		Integer resultMax = 1;
+		try{
+			  PreparedStatement preparedStatement = (PreparedStatement) con.prepareStatement(query);
+
+			rs = preparedStatement.executeQuery();
+			
+			while(rs.next())
+			{
+				resultMax = rs.getInt("max(productID)");
+				if(resultMax != null)
+					return resultMax+ 1;
+			}
+			
+
+		}catch(Exception ex){
+			System.out.println(ex);
+		}
+		
+		return resultMax;
+	}
+	
+}
+		  

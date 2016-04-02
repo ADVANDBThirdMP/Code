@@ -1,5 +1,6 @@
 import java.io.*; 
-import java.net.*; 
+import java.net.*;
+import java.sql.ResultSet; 
 class UDPServer
 {    
 	public static void main(String args[]) throws Exception       
@@ -17,7 +18,7 @@ class UDPServer
 			
 			serverSocket.receive(receivePacket);                   
 			String queryFromClient = new String( receivePacket.getData());                   
-			int count = db.executeQuery(queryFromClient);
+			ResultSet resultSet = db.executeQuery(queryFromClient);
 			
 			
 			//Using received packet I get address and port number
@@ -32,9 +33,9 @@ class UDPServer
 			
 			
 			//gives back the result to client
-			String result = Integer.toString(count);
 			
-			sendData = result.getBytes();
+			
+//			sendData= resultSet.getBytes();
 			
 			
 			DatagramPacket returnResult = new DatagramPacket(sendData, sendData.length, IPAddress, port);

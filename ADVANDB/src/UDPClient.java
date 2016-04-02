@@ -21,7 +21,7 @@ class UDPClient {
 		clientSocket = new DatagramSocket();
 
 		// Too whom it is sent
-		InetAddress IPAddress = InetAddress.getByName("10.100.202.219");
+		InetAddress IPAddress = InetAddress.getByName("localhost");
 		byte[] sendData = new byte[1024];
 		byte[] receiveData = new byte[1024];
 

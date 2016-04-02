@@ -30,26 +30,45 @@ public class DBConnect {
 	
 	//get next available productID
 	
-	public int executeQuery(String query)
+//	public int executeQuery(String query)
+//	{
+//		Integer resultCount = 1;
+//		try{
+//			  PreparedStatement preparedStatement = (PreparedStatement) con.prepareStatement(query);
+//
+//			rs = preparedStatement.executeQuery();
+//			
+//			while(rs.next())
+//			{
+//				resultCount = rs.getInt("count(*)");
+//				System.out.println("Database accessed with query: " + query);
+//			}
+//			
+//
+//		}catch(Exception ex){
+//			System.out.println(ex);
+//		}
+//		
+//		return resultCount;
+//	}
+//	
+	
+	public ResultSet executeQuery(String query)
 	{
-		Integer resultCount = 1;
+		ResultSet result = null;
 		try{
 			  PreparedStatement preparedStatement = (PreparedStatement) con.prepareStatement(query);
 
 			rs = preparedStatement.executeQuery();
 			
-			while(rs.next())
-			{
-				resultCount = rs.getInt("count(*)");
-				System.out.println("Database accessed with query: " + query);
-			}
-			
+
+			result = rs;
 
 		}catch(Exception ex){
 			System.out.println(ex);
 		}
 		
-		return resultCount;
+		return result;
 	}
 	
 }

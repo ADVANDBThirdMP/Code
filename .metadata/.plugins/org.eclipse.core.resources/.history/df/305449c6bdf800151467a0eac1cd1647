@@ -1,0 +1,58 @@
+
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import net.miginfocom.swing.MigLayout;
+
+public class RightSplit implements ActionListener {
+
+	JPanel jPanel = new JPanel();
+
+	private DBConnect db = new DBConnect();
+	private MainGUI mainGUI;
+	private TransactionTab transactionTab;
+
+	public RightSplit(MainGUI mainGUI) {
+
+		this.mainGUI = mainGUI;
+	
+	        JTabbedPane jtp = new JTabbedPane();
+	        jPanel.add(jtp);
+	        
+	        TransactionTab jp1 = new TransactionTab(mainGUI);
+	        TransactionTab jp2 = new TransactionTab(mainGUI);
+
+	        jtp.addTab("Tab1", jp1);
+	        jtp.addTab("Tab2", jp2);
+		
+		jPanel.setSize(800, 600);
+		
+
+	}
+
+	public JPanel getJPanel() {
+		return jPanel;
+	}
+
+	private class ActListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+			// if (e.getSource() == btnLogin) {
+			//
+			// }
+			//
+			// else {
+			//
+			// }
+		}
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+}

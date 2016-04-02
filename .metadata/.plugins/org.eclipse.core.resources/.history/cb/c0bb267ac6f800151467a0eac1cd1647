@@ -1,0 +1,104 @@
+
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import net.miginfocom.swing.MigLayout;
+
+public class RightSplit implements ActionListener {
+
+	JPanel jPanel = new JPanel();
+
+	private DBConnect db = new DBConnect();
+	private MainGUI mainGUI;
+	
+	private JTabbedPane jtp = new JTabbedPane();
+	private TransactionTab transactionTab;
+	private JButton btnDelTab;
+	private JTextField txtTabName;
+	private JTable table;
+	private JButton btnNewButton;
+
+	public RightSplit(MainGUI mainGUI) {
+
+		this.mainGUI = mainGUI;
+		jPanel.setLayout(null);
+
+		jtp.setBounds(27, 6, 748, 253);
+		jPanel.add(jtp);
+		
+		btnDelTab = new JButton("Del Tab");
+
+		TransactionTab jp1 = new TransactionTab(mainGUI);
+		TransactionTab jp2 = new TransactionTab(mainGUI);
+
+		jtp.addTab("Tab1", jp1.getJPanel());
+		jtp.addTab("Tab2", jp2);
+
+		jPanel.setSize(800, 600);
+
+		JButton btnAddTab = new JButton("Add Tab");
+		btnAddTab.setBounds(27, 297, 73, 23);
+
+		btnAddTab.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jtp.addTab(txtTabName.getText(), new TransactionTab(mainGUI));
+			}
+		});
+
+		jPanel.add(btnAddTab);
+
+		
+		btnDelTab.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent evt) {
+
+			        int index = jtp.indexOfTab("Glenn");
+			        if (index >= 0) {
+			            jtp.removeTabAt(index);
+			        }
+
+			    }
+		});
+		btnDelTab.setBounds(27, 551, 249, 23);
+		jPanel.add(btnDelTab);
+		
+		txtTabName = new JTextField();
+		txtTabName.setBounds(110, 298, 165, 22);
+		jPanel.add(txtTabName);
+		txtTabName.setColumns(10);
+		
+		table = new JTable();
+		table.setBounds(27, 331, 248, 209);
+		jPanel.add(table);
+		
+		btnNewButton = new JButton("New button");
+		btnNewButton.setBounds(676, 297, 89, 23);
+		jPanel.add(btnNewButton);
+
+	}
+
+	public JPanel getJPanel() {
+		return jPanel;
+	}
+
+	private class ActListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+			// if (e.getSource() == btnLogin) {
+			//
+			// }
+			//
+			// else {
+			//
+			// }
+		}
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+}
