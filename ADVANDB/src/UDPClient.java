@@ -20,7 +20,7 @@ class UDPClient
 		System.out.println("FROM SERVER:" + modifiedSentence);       
 		System.out.println();
 		clientSocket.close();    
-	}  // Pogi si glenn
+	}  // Pogi si brandon
 	
 	
 
