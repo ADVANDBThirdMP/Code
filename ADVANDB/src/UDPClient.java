@@ -3,6 +3,7 @@ import java.net.*;
 class UDPClient 
 {    
 	public static void main(String args[]) throws Exception    
+	//o 3o
 	{       
 		BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));       
 		DatagramSocket clientSocket = new DatagramSocket();       
@@ -17,6 +18,10 @@ class UDPClient
 		clientSocket.receive(receivePacket);       
 		String modifiedSentence = new String(receivePacket.getData());       
 		System.out.println("FROM SERVER:" + modifiedSentence);       
+		System.out.println();
 		clientSocket.close();    
 	}  // Pogi si glenn
+	
+	
+
 }
