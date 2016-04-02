@@ -12,10 +12,16 @@ class UDPClient
 				DatagramSocket clientSocket = new DatagramSocket();       
 				
 				//Too whom it is sent
-				InetAddress IPAddress = InetAddress.getByName("localhost");       
+				InetAddress IPAddress = InetAddress.getByName("10.100.202.219");       
 				byte[] sendData = new byte[1024];       
-				byte[] receiveData = new byte[1024];       
-				String sentence = inFromUser.readLine();
+				byte[] receiveData = new byte[1024];   
+				
+				String sentence; 
+				
+				
+				//loop para paulit ulit
+				do{
+				sentence = inFromUser.readLine();
 				
 				//converts string to bytes
 				sendData = sentence.getBytes();       
@@ -26,10 +32,29 @@ class UDPClient
 				
 				//Waits for reply/acknowledgement from server
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);       
-				clientSocket.receive(receivePacket);       
-				String modifiedSentence = new String(receivePacket.getData());       
-				System.out.println("FROM SERVER:" + modifiedSentence);       
+				clientSocket.receive(receivePacket);     
+				
+				String handshake = new String(receivePacket.getData());  
+				
+				//not null yes handshake PROCEED
+				if(receivePacket.getData() != null)
+				{
+					System.out.println("Server accepted handshake:" + handshake);      
+
+				}
+				//null no handshake ABORT
+				else if(receivePacket.getData() == null){
+					System.out.println("Server did not accept handshake:" + handshake);      
+				}
+				
+				}while(!sentence.equals("stop"));
+				
+
+				
 				clientSocket.close();   
+			
+				
+				
 				//Comment    
 	}  // Pogi si brandon
 	
