@@ -30,7 +30,7 @@ public class DBConnect {
 	
 	//get next available productID
 	
-	public int executeQuery()
+	public int getNextAvailableProductID()
 	{
 		String query = "SELECT count(*) FROM hpq_alp;";
 		Integer resultCount = 1;
