@@ -1,0 +1,82 @@
+import java.io.*;
+import java.net.*;
+
+import com.mysql.jdbc.SocksProxySocketFactory;
+import com.mysql.jdbc.StandardLoadBalanceExceptionChecker;
+
+class UDPClient {
+	private DBConnect db = new DBConnect();
+
+	private static DatagramPacket receivePacket;
+
+	static DatagramSocket clientSocket;
+
+	public static void main(String args[]) throws Exception {
+
+		System.out.println("App started");
+		// Gets input from user
+		BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+
+		// Makes socket used to send
+		clientSocket = new DatagramSocket();
+
+		// Too whom it is sent
+		InetAddress IPAddress = InetAddress.getByName("10.100.202.219");
+		byte[] sendData = new byte[1024];
+		byte[] receiveData = new byte[1024];
+
+		String sentence;
+
+		// loop para paulit ulit
+		do {
+			sentence = inFromUser.readLine();
+
+			// converts string to bytes
+			sendData = sentence.getBytes();
+
+			// Send it to server
+			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+			clientSocket.send(sendPacket);
+
+			// Waits for reply/acknowledgement from server
+			receivePacket = new DatagramPacket(receiveData, receiveData.length);
+
+			// Set timeout for handshake
+
+			try {
+
+				someMethod();
+
+			} catch (SocketTimeoutException e) {
+				e.printStackTrace();
+				System.out.println("Server did not accept handshake, aborting transaction");
+
+			}
+
+		} while (!sentence.equals("stop"));
+
+		clientSocket.close();
+
+		// Comment
+	} // Pogi si brandon
+
+	public static void someMethod() throws IOException {
+
+		clientSocket.setSoTimeout((int) 10000);
+		try {
+			clientSocket.receive(receivePacket);
+
+		} catch (Exception e) {
+			System.out.println("Patay si server");
+		}
+
+		String handshake = new String(receivePacket.getData());
+
+		// some condition here.
+		if (receivePacket.getData() != null) {
+			System.out.println("Server accepted handshake:" + handshake);
+		}
+		// if met..
+		System.out.println("Buhay si server");
+	}
+}

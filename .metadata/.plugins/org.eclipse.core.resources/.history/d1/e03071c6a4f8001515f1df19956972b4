@@ -41,7 +41,6 @@ public class DBConnect {
 			while(rs.next())
 			{
 				resultCount = rs.getInt("count(*)");
-				System.out.println("Database accessed with query: " + query);
 			}
 			
 

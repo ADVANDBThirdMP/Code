@@ -28,10 +28,7 @@ class UDPServer
 			String sendBackHandshake = "I accepted handshake";                  
 			
 			sendData = sendBackHandshake.getBytes();     
-			
-			//Send acknowledgement to whom pack is from
-			DatagramPacket sendHandshakeMessage = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-			serverSocket.send(sendHandshakeMessage);   
+			   
 			
 			
 			//gives back the result to client

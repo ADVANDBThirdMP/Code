@@ -18,7 +18,7 @@ public class DBConnect {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq","root","");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/introse_mp","root","");
 
 			
 			con.createStatement();
@@ -41,7 +41,6 @@ public class DBConnect {
 			while(rs.next())
 			{
 				resultCount = rs.getInt("count(*)");
-				System.out.println("Database accessed with query: " + query);
 			}
 			
 
