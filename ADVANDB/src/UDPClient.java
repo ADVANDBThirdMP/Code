@@ -5,21 +5,27 @@ class UDPClient
 	public static void main(String args[]) throws Exception    
 	//o 3o
 	{       
-		BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));       
-		DatagramSocket clientSocket = new DatagramSocket();       
-		InetAddress IPAddress = InetAddress.getByName("10.100.202.219");       
-		byte[] sendData = new byte[1024];       
-		byte[] receiveData = new byte[1024];       
-		String sentence = inFromUser.readLine();
-		sendData = sentence.getBytes();       
-		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);       
-		clientSocket.send(sendPacket);       
-		DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);       
-		clientSocket.receive(receivePacket);       
-		String modifiedSentence = new String(receivePacket.getData());       
-		System.out.println("FROM SERVER:" + modifiedSentence);       
-		System.out.println();
-		clientSocket.close();    
+		//Gets input from user
+				BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));     
+				//Makes socket used to send 
+				DatagramSocket clientSocket = new DatagramSocket();       
+				//Too whom it is sent
+				InetAddress IPAddress = InetAddress.getByName("localhost");       
+				byte[] sendData = new byte[1024];       
+				byte[] receiveData = new byte[1024];       
+				String sentence = inFromUser.readLine();
+				//converts string to bytes
+				sendData = sentence.getBytes();       
+				//Send it to server
+				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);       
+				clientSocket.send(sendPacket);       
+				//Waits for reply/acknowledgement from server
+				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);       
+				clientSocket.receive(receivePacket);       
+				String modifiedSentence = new String(receivePacket.getData());       
+				System.out.println("FROM SERVER:" + modifiedSentence);       
+				clientSocket.close();   
+				//Comment    
 	}  // Pogi si brandon
 	
 	
