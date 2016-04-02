@@ -23,9 +23,11 @@ public class RightSplit implements ActionListener {
 	private JButton btnDelTab;
 	private JTextField txtTabName;
 	private JButton btnNewButton;
-	private ArrayList<String> transactions = new ArrayList<String>();
-	private JTable table = new JTable();
-	private DefaultTableModel model;
+	private ArrayList<String> transactions = new ArrayList<>();
+//	private JTable table = new JTable();
+
+	
+	private JTable table;
 
 	public RightSplit(MainGUI mainGUI) {
 
@@ -48,13 +50,23 @@ public class RightSplit implements ActionListener {
 
 		
 		Object column_names[]= {"Transactions"};
+		Object[][] kerrbie = {{1,2,3,4}, {6,7,8,0}};
+		
+		DefaultTableModel model=new DefaultTableModel(kerrbie, column_names);
 
 		
-		model=new DefaultTableModel(column_names, 0);
+		transactions.add("Waddap");
+		transactions.add("Waddap1");
 
 		
+		System.out.println(transactions.size());
+		for (int i = 0; i < transactions.size(); i++) {
+			model.addRow(new Object[] { transactions.get(i)});
+		}
 		
-	
+		 JTable table=new JTable();
+		 
+		 table.setModel(model);
 		
 		
 		JScrollPane tablePane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -66,21 +78,8 @@ public class RightSplit implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				jtp.addTab(txtTabName.getText(), new TransactionTab(mainGUI));
 				transactions.add(txtTabName.getText());
-
-				model = new DefaultTableModel(column_names, 0);
-				table = new JTable();
-				
 			}
 		});
-		
-		for (int i = 0; i < transactions.size()-1; i++) {
-			System.out.println(i);
-			model.addRow(new Object[] { transactions.get(i)});
-			model.fireTableDataChanged();
-
-			table.setModel(model);
-			table.repaint();
-		}
 
 		jPanel.add(btnAddTab, "cell 0 1,alignx left,aligny top");
 

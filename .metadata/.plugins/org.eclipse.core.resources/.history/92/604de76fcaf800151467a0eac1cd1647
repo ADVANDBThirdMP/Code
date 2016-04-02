@@ -2,8 +2,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import javafx.scene.control.ScrollPane;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,9 +21,8 @@ public class RightSplit implements ActionListener {
 	private JButton btnDelTab;
 	private JTextField txtTabName;
 	private JButton btnNewButton;
-	private ArrayList<String> transactions = new ArrayList<String>();
+	private ArrayList<String> transactions = new ArrayList<>();
 	private JTable table = new JTable();
-	private DefaultTableModel model;
 
 	public RightSplit(MainGUI mainGUI) {
 
@@ -44,43 +41,23 @@ public class RightSplit implements ActionListener {
 		jPanel.setSize(800, 600);
 
 		JButton btnAddTab = new JButton("Add Tab");
-
-
 		
-		Object column_names[]= {"Transactions"};
-
+		DefaultTableModel model = new DefaultTableModel(new Object[] {"Transactions", "Tae"}, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		
-		model=new DefaultTableModel(column_names, 0);
-
-		
-		
-	
-		
-		
-		JScrollPane tablePane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
-		jPanel.add(tablePane);
+		table.setModel(model);
 		
 
 		btnAddTab.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jtp.addTab(txtTabName.getText(), new TransactionTab(mainGUI));
 				transactions.add(txtTabName.getText());
-
-				model = new DefaultTableModel(column_names, 0);
-				table = new JTable();
-				
 			}
 		});
-		
-		for (int i = 0; i < transactions.size()-1; i++) {
-			System.out.println(i);
-			model.addRow(new Object[] { transactions.get(i)});
-			model.fireTableDataChanged();
-
-			table.setModel(model);
-			table.repaint();
-		}
 
 		jPanel.add(btnAddTab, "cell 0 1,alignx left,aligny top");
 
@@ -97,7 +74,7 @@ public class RightSplit implements ActionListener {
 			    }
 		});
 		
-		jPanel.add(tablePane, "cell 0 2 3 1,grow");
+		jPanel.add(table, "cell 0 2 3 1,grow");
 		jPanel.add(btnDelTab, "cell 0 3 3 1,growx,aligny top");
 		
 		txtTabName = new JTextField();
