@@ -18,15 +18,15 @@ public class RightSplit implements ActionListener {
 	private DBConnect db = new DBConnect();
 	private MainGUI mainGUI;
 
-	// transactionstable
+	//transactionstable
 	private JTabbedPane jTabbedPane = new JTabbedPane();
 	private ArrayList<String> transactions = new ArrayList<String>();
 	private JTable table = new JTable();
 	private Object column_names[] = { "Transactions" };
 	private DefaultTableModel model = new DefaultTableModel(column_names, 0);
 	private JScrollPane tablePane;
-
-	// buttons
+	
+	//buttons
 	private final JButton btnCommit = new JButton("COMMIT");
 	private final JButton btnRollback = new JButton("ROLLBACK");
 	private JButton btnAddTab = new JButton("Add Trans");
@@ -35,10 +35,10 @@ public class RightSplit implements ActionListener {
 	private ActListener act = new ActListener();
 
 	private JTextField txtNewTransactionsName = new JTextField();
-
-	// menus
+	
+	//menus
 	private JMenuBar jMenuBar = new JMenuBar();
-
+	
 	private JMenu transaction = new JMenu("Transactions");
 	private JMenu run = new JMenu("Run");
 	private JMenu file = new JMenu("File");
@@ -52,7 +52,7 @@ public class RightSplit implements ActionListener {
 
 	private JMenuItem runSelected = new JMenuItem("Run");
 	private JMenuItem runAll = new JMenuItem("Run All");
-
+		
 	public RightSplit(MainGUI mainGUI) {
 		this.mainGUI = mainGUI;
 
@@ -68,10 +68,12 @@ public class RightSplit implements ActionListener {
 		table.setModel(model);
 		tablePane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-		// populate transactions table based on transactions arraylist
+		
+		//populate transactions table based on transactions arraylist
 		populateTransactionsTable();
 
+
+		
 		btnAddTab.setBounds(10, 279, 190, 23);
 		btnDelTab.setBounds(7, 570, 431, 23);
 		jTabbedPane.setBounds(7, 33, 788, 235);
@@ -87,6 +89,7 @@ public class RightSplit implements ActionListener {
 		jPanel.add(jTabbedPane);
 		jPanel.add(tablePane);
 		jPanel.add(tablePane, "cell 0 2 3 1,grow");
+
 
 		txtNewTransactionsName.setBounds(210, 279, 228, 32);
 		jPanel.add(txtNewTransactionsName);
@@ -111,6 +114,7 @@ public class RightSplit implements ActionListener {
 		jMenuBar.add(transaction);
 		jMenuBar.add(run);
 
+
 		btnAddTab.addActionListener(act);
 		btnDelTab.addActionListener(act);
 		btnCommit.addActionListener(act);
@@ -121,13 +125,21 @@ public class RightSplit implements ActionListener {
 		return jPanel;
 	}
 
-	//populates/refreshes table based on array list
+	
 	public void populateTransactionsTable() {
-		model = new DefaultTableModel(column_names, 0);
-
 		for (int i = 0; i < transactions.size(); i++) {
 			model.addRow(new Object[] { transactions.get(i) });
+			model.fireTableDataChanged();
+
+			table.setModel(model);
+			tablePane.repaint();
+			jPanel.repaint();
+			jPanel.revalidate();
 		}
+
+	}
+	
+	public void refreshTable(){
 		model.fireTableDataChanged();
 
 		table.setModel(model);
@@ -135,41 +147,41 @@ public class RightSplit implements ActionListener {
 		jPanel.repaint();
 		jPanel.revalidate();
 	}
-
-
-	// adds transactions to arraylist then refreshses table
+	//adds transactions to arraylist then refreshses table
 	public void addTransactions() {
 		jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
 		transactions.add(txtNewTransactionsName.getText());
 
+		model = new DefaultTableModel(column_names, 0);
+
 		populateTransactionsTable();
 	}
 	
-	//deletes transactions and refreshes table
-	public void deleteTransactions(){
-		int row = table.getSelectedRow();
-		int column = table.getColumnCount();
-
-		int index = jTabbedPane.indexOfTab(table.getValueAt(row, 0).toString());
-		if (index >= 0) {
-			jTabbedPane.removeTabAt(index);
-		}
-		transactions.remove(table.getValueAt(row, 0).toString());
-		populateTransactionsTable();
-	}
 
 	private class ActListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == btnAddTab) {
 				addTransactions();
 			}
-
+			
 			if (e.getSource() == btnDelTab) {
-				deleteTransactions();
+				int row = table.getSelectedRow();
+				int column = table.getColumnCount();
+
+				int index = jTabbedPane.indexOfTab(table.getValueAt(row, 0).toString());
+				if (index >= 0) {
+					jTabbedPane.removeTabAt(index);
+				}
+				transactions.remove(table.getValueAt(row, 0).toString());
+				refreshTable();
 			}
+			
+			
 
 		}
 	}
+	
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

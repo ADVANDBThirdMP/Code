@@ -134,6 +134,7 @@ public class RightSplit implements ActionListener {
 		tablePane.repaint();
 		jPanel.repaint();
 		jPanel.revalidate();
+
 	}
 
 
@@ -144,19 +145,6 @@ public class RightSplit implements ActionListener {
 
 		populateTransactionsTable();
 	}
-	
-	//deletes transactions and refreshes table
-	public void deleteTransactions(){
-		int row = table.getSelectedRow();
-		int column = table.getColumnCount();
-
-		int index = jTabbedPane.indexOfTab(table.getValueAt(row, 0).toString());
-		if (index >= 0) {
-			jTabbedPane.removeTabAt(index);
-		}
-		transactions.remove(table.getValueAt(row, 0).toString());
-		populateTransactionsTable();
-	}
 
 	private class ActListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -165,7 +153,15 @@ public class RightSplit implements ActionListener {
 			}
 
 			if (e.getSource() == btnDelTab) {
-				deleteTransactions();
+				int row = table.getSelectedRow();
+				int column = table.getColumnCount();
+
+				int index = jTabbedPane.indexOfTab(table.getValueAt(row, 0).toString());
+				if (index >= 0) {
+					jTabbedPane.removeTabAt(index);
+				}
+				transactions.remove(table.getValueAt(row, 0).toString());
+				populateTransactionsTable();;
 			}
 
 		}

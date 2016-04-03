@@ -121,7 +121,6 @@ public class RightSplit implements ActionListener {
 		return jPanel;
 	}
 
-	//populates/refreshes table based on array list
 	public void populateTransactionsTable() {
 		model = new DefaultTableModel(column_names, 0);
 
@@ -134,27 +133,24 @@ public class RightSplit implements ActionListener {
 		tablePane.repaint();
 		jPanel.repaint();
 		jPanel.revalidate();
+
 	}
 
+	public void refreshTable() {
+
+		model.fireTableDataChanged();
+
+		table.setModel(model);
+		tablePane.repaint();
+		jPanel.repaint();
+		jPanel.revalidate();
+	}
 
 	// adds transactions to arraylist then refreshses table
 	public void addTransactions() {
 		jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
 		transactions.add(txtNewTransactionsName.getText());
 
-		populateTransactionsTable();
-	}
-	
-	//deletes transactions and refreshes table
-	public void deleteTransactions(){
-		int row = table.getSelectedRow();
-		int column = table.getColumnCount();
-
-		int index = jTabbedPane.indexOfTab(table.getValueAt(row, 0).toString());
-		if (index >= 0) {
-			jTabbedPane.removeTabAt(index);
-		}
-		transactions.remove(table.getValueAt(row, 0).toString());
 		populateTransactionsTable();
 	}
 
@@ -165,7 +161,15 @@ public class RightSplit implements ActionListener {
 			}
 
 			if (e.getSource() == btnDelTab) {
-				deleteTransactions();
+				int row = table.getSelectedRow();
+				int column = table.getColumnCount();
+
+				int index = jTabbedPane.indexOfTab(table.getValueAt(row, 0).toString());
+				if (index >= 0) {
+					jTabbedPane.removeTabAt(index);
+				}
+				transactions.remove(table.getValueAt(row, 0).toString());
+				refreshTable();
 			}
 
 		}

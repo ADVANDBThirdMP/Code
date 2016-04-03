@@ -58,7 +58,6 @@ public class MainGUI {
 	   
 	public void setRightSplit() {
 		rightJPanel.add(rightSplit.getJPanel());
-		
 	}
 	
 	public void removeRightSplit(JPanel guiClass)

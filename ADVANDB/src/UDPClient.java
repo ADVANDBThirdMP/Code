@@ -25,6 +25,7 @@ class UDPClient {
 		byte[] sendData = new byte[1024];
 		byte[] receiveData = new byte[1024];
 
+		
 		String sentence;
 
 		// loop para paulit ulit
@@ -57,19 +58,13 @@ class UDPClient {
 		} while (!sentence.equals("stop"));
 
 		clientSocket.close();
-
-		// Comment
-	} // Pogi si brandon
-
+	} 
 	public static void someMethod() throws IOException {
 
 		clientSocket.setSoTimeout((int) 5000);
 		try {
 			clientSocket.receive(receivePacket);
 			String handshake = new String(receivePacket.getData());
-
-			
-			
 			
 			// some condition here.
 			if (receivePacket.getData() != null) {
@@ -81,6 +76,30 @@ class UDPClient {
 		} catch (Exception e) {
 			System.out.println("Patay si server");
 		}
+		
+		try {
+			clientSocket.receive(receivePacket);
+			String handshake = new String(receivePacket.getData());
+			
+			// some condition here.
+			if (receivePacket.getData() != null) {
+				System.out.println("Server accepted handshake:" + handshake);
+				
+				ByteArrayInputStream bais = new ByteArrayInputStream(receivePacket.getData());
+				DataInputStream in = new DataInputStream(bais);
+				while (in.available() > 0) {
+				    String element = in.readUTF();
+				    System.out.println(element);
+				}
+			}
+			
+			// if met..
+			System.out.println("Buhay si server");
+
+		} catch (Exception e) {
+			System.out.println("Patay si server");
+		}
+	
 
 	
 	}
