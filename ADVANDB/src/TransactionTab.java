@@ -17,12 +17,14 @@ public class TransactionTab extends JPanel implements ActionListener {
 	
 	private DBConnect db = new DBConnect();
 	private MainGUI mainGUI;
-
+	private JButton btnRun;
+	private UDPClient udpClient;
 	
-	public TransactionTab(MainGUI mainGUI) {
+	public TransactionTab(MainGUI mainGUI) throws Exception {
 
 		this.mainGUI = mainGUI;
 	
+		udpClient = new UDPClient();
 	    
 		
 		GridBagLayout gbl_jPanel = new GridBagLayout();
@@ -32,17 +34,17 @@ public class TransactionTab extends JPanel implements ActionListener {
 		gbl_jPanel.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		jPanel.setLayout(gbl_jPanel);
 		
-		JTextArea textArea = new JTextArea();
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.gridheight = 7;
-		gbc_textArea.gridwidth = 18;
-		gbc_textArea.insets = new Insets(0, 0, 5, 5);
-		gbc_textArea.fill = GridBagConstraints.BOTH;
-		gbc_textArea.gridx = 1;
-		gbc_textArea.gridy = 1;
-		jPanel.add(textArea, gbc_textArea);
+		JTextArea txtTransactionQuery = new JTextArea();
+		GridBagConstraints gbc_txtTransactionQuery = new GridBagConstraints();
+		gbc_txtTransactionQuery.gridheight = 7;
+		gbc_txtTransactionQuery.gridwidth = 18;
+		gbc_txtTransactionQuery.insets = new Insets(0, 0, 5, 5);
+		gbc_txtTransactionQuery.fill = GridBagConstraints.BOTH;
+		gbc_txtTransactionQuery.gridx = 1;
+		gbc_txtTransactionQuery.gridy = 1;
+		jPanel.add(txtTransactionQuery, gbc_txtTransactionQuery);
 		
-		JButton btnRun = new JButton("Run");
+		btnRun = new JButton("Run");
 		GridBagConstraints gbc_btnRun = new GridBagConstraints();
 		gbc_btnRun.insets = new Insets(0, 0, 5, 5);
 		gbc_btnRun.gridx = 18;
@@ -54,9 +56,7 @@ public class TransactionTab extends JPanel implements ActionListener {
 
 	}
 
-	
-	
-	
+
 	public JPanel getJPanel() {
 		return jPanel;
 	}
@@ -64,13 +64,10 @@ public class TransactionTab extends JPanel implements ActionListener {
 	private class ActListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-//			if (e.getSource() == btnLogin) {
-//
-//			}
-//
-//			else {
-//		
-//			}
+			if (e.getSource() == btnRun) {
+//				udpClient
+//				JTabbedPane.
+			}
 		}
 
 	}

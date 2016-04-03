@@ -11,12 +11,14 @@ public class MainGUI {
 	private JScrollPane leftScrollPane = new JScrollPane(leftJPanel);
 	private JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftScrollPane, rightScrollPane);
 	private JFrame frame = new JFrame("MCO3");	
-	private LeftSplit leftSplit = new LeftSplit(this);
-	private RightSplit rightSplit = new RightSplit(this);
+	private LeftSplit leftSplit;
+	private RightSplit rightSplit;
 			
 	
-	public MainGUI(){
+	public MainGUI() throws Exception{
 		
+		leftSplit = new LeftSplit(this);
+		rightSplit = new RightSplit(this);
 		frame.setLayout(new BorderLayout());
 		rightScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		rightScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -38,7 +40,7 @@ public class MainGUI {
         frame.setVisible(true);	  
 	
 
-		frame.setSize(1040, 650);
+		frame.setSize(1500, 650);
 		frame.setLocationRelativeTo(null);
 	}
 	
@@ -58,11 +60,9 @@ public class MainGUI {
 	   
 	public void setRightSplit() {
 		rightJPanel.add(rightSplit.getJPanel());
-		
 	}
 	
 	public void removeRightSplit(JPanel guiClass)
-	
 	{
 		rightJPanel.remove(guiClass);
 		frame.revalidate(); // For Java 1.7 or above
@@ -86,7 +86,7 @@ public class MainGUI {
 	}
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		try 
 		{ 

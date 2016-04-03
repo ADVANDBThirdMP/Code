@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.SocksProxySocketFactory;
 import com.mysql.jdbc.StandardLoadBalanceExceptionChecker;
@@ -11,114 +12,109 @@ class UDPClient {
 
 	static DatagramSocket clientSocket;
 
-	public static void main(String args[]) throws Exception {
+	private DataInputStream in;
 
+	private DatagramPacket sendQueryInDataGramPacket;
+	
+	public UDPClient() {
+
+	}
+
+	public void handShakeAndGetQuery(String query) throws Exception {
 		System.out.println("App started");
 		// Gets input from user
-		BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+		
 
 		// Makes socket used to send
 		clientSocket = new DatagramSocket();
 
 		// Too whom it is sent
 		InetAddress IPAddress = InetAddress.getByName("localhost");
-		byte[] sendData = new byte[1024];
+		byte[] sendQueryToServer = new byte[1024];
 		byte[] receiveData = new byte[1024];
 
 		
-		String sentence;
-
-		// loop para paulit ulit
-		do {
-			sentence = inFromUser.readLine();
-
-			// converts string to bytes
-			sendData = sentence.getBytes();
-
-			// Send it to server
-			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
-			clientSocket.send(sendPacket);
-
-			// Waits for reply/acknowledgement from server
-			receivePacket = new DatagramPacket(receiveData, receiveData.length);
 		
+		
+		
+		// loop para paulit ulit
+		// do {
 
-			// Set timeout for handshake
+		// converts string to bytes
+		sendQueryToServer = query.getBytes();
 
-			try {
+		// Send it to server
+		sendQueryInDataGramPacket = new DatagramPacket(sendQueryToServer, sendQueryToServer.length, IPAddress, 9876);
+		clientSocket.send(sendQueryInDataGramPacket);
 
-				someMethod();
+		// Waits for reply/acknowledgement from server
+		receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
-			} catch (SocketTimeoutException e) {
-				e.printStackTrace();
-				System.out.println("Server did not accept handshake, aborting transaction");
+		try {
 
-			}
+			//passes receivePacket
+			commitQuery();
 
-		} while (!sentence.equals("stop"));
+		} catch (SocketTimeoutException e) {
+			e.printStackTrace();
+			System.out.println("Server did not accept handshake, aborting transaction");
+
+		}
+
+		// } while (!sentence.equals("stop"));
 
 		clientSocket.close();
-	} 
-	public static void someMethod() throws IOException {
+	}
+
+	public DataInputStream commitQuery() throws IOException {
 
 		clientSocket.setSoTimeout((int) 5000);
+
+		//for handshake
 		try {
 			clientSocket.receive(receivePacket);
 			String handshake = new String(receivePacket.getData());
-			
-			// some condition here.
+
 			if (receivePacket.getData() != null) {
 				System.out.println("Server accepted handshake:" + handshake);
 			}
-			// if met..
-			System.out.println("Buhay si server");
-
+			System.out.println("Server is up");
 		} catch (Exception e) {
-			System.out.println("Patay si server");
+			System.out.println("Server is down");
 		}
-		
 
+		//for size of queried table row count
 		try {
 			clientSocket.receive(receivePacket);
-			String handshake = new String(receivePacket.getData());
-			
-			// some condition here.
+			String queriedTableRowCount = new String(receivePacket.getData());
+
 			if (receivePacket.getData() != null) {
-				System.out.println("Size" + handshake);
+				System.out.println("Size" + queriedTableRowCount);
 			}
-			// if met..
-			System.out.println("Buhay si server");
-
+			System.out.println("Server is up");
 		} catch (Exception e) {
-			System.out.println("Patay si server");
+			System.out.println("Server is down");
 		}
-		
 
-		
+		//for the queried table
 		try {
 			clientSocket.receive(receivePacket);
-			String handshake = new String(receivePacket.getData());
-			
-			// some condition here.
 			if (receivePacket.getData() != null) {
-				System.out.println("Server accepted handshake:" + handshake);
-				
-				ByteArrayInputStream bais = new ByteArrayInputStream(receivePacket.getData());
-				DataInputStream in = new DataInputStream(bais);
-				while (in.available() > 0) {
-				    String element = in.readUTF();
-				    System.out.println(element);
-				}
+
+				ByteArrayInputStream queriedTableInBytes = new ByteArrayInputStream(receivePacket.getData());
+				in = new DataInputStream(queriedTableInBytes);
+//
+//				while (in.available() > 0) {
+//					String element = in.readUTF();
+//					System.out.println(element);
+//				}
 			}
-			
-			// if met..
-			System.out.println("Buhay si server");
+			System.out.println("Server is up");
 
 		} catch (Exception e) {
-			System.out.println("Patay si server");
+			System.out.println("Server is down");
 		}
-		
-		
-	
+		return in;
+
 	}
 }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import net.miginfocom.swing.MigLayout;
 
-public class RightSplit implements ActionListener {
+public class RightSplit implements ActionListener  {
 
 	JPanel jPanel = new JPanel();
 
@@ -21,16 +21,22 @@ public class RightSplit implements ActionListener {
 	// transactionstable
 	private JTabbedPane jTabbedPane = new JTabbedPane();
 	private ArrayList<String> transactions = new ArrayList<String>();
-	private JTable table = new JTable();
-	private Object column_names[] = { "Transactions" };
-	private DefaultTableModel model = new DefaultTableModel(column_names, 0);
-	private JScrollPane tablePane;
+	private JTable transactionsTable = new JTable();
+	private Object transaction_column_names[] = { "Transactions" };
+	private DefaultTableModel transactionsTableModel = new DefaultTableModel(transaction_column_names, 0);
+	private JScrollPane transactionsTablePane;
+
+	// resultstable
+	private JTable resultTable = new JTable();
+	private Object result_column_names[] = { "No Transactions yet" };
+	private DefaultTableModel resultsTableModel = new DefaultTableModel(result_column_names, 0);
+	private JScrollPane resultsTablePane;
 
 	// buttons
 	private final JButton btnCommit = new JButton("COMMIT");
 	private final JButton btnRollback = new JButton("ROLLBACK");
-	private JButton btnAddTab = new JButton("Add Trans");
-	private JButton btnDelTab = new JButton("Del Trans");
+	private JButton btnAddTab = new JButton("Add transaction");
+	private JButton btnDelTab = new JButton("Delete transaction");
 
 	private ActListener act = new ActListener();
 
@@ -52,32 +58,44 @@ public class RightSplit implements ActionListener {
 
 	private JMenuItem runSelected = new JMenuItem("Run");
 	private JMenuItem runAll = new JMenuItem("Run All");
+	
+	private UDPClient udpClient;
+	private UDPServer udpServer;
 
-	public RightSplit(MainGUI mainGUI) {
+	public RightSplit(MainGUI mainGUI) throws Exception {
+		
+		
+		udpClient = new UDPClient();
 		this.mainGUI = mainGUI;
 
 		jPanel.setLayout(null);
-		jPanel.setSize(800, 600);
+		jPanel.setSize(1100, 600);
 
+		
 		// default transaction
 		TransactionTab defaultTransaction = new TransactionTab(mainGUI);
 		transactions.add("Default");
 		jTabbedPane.addTab("Default", defaultTransaction.getJPanel());
 
 		// for the transactions table
-		table.setModel(model);
-		tablePane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		transactionsTable.setModel(transactionsTableModel);
+		transactionsTablePane = new JScrollPane(transactionsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
+		
+		//for results table
+		resultTable.setModel(resultsTableModel);
+		resultsTablePane = new JScrollPane(resultTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
 		// populate transactions table based on transactions arraylist
 		populateTransactionsTable();
 
-		btnAddTab.setBounds(10, 279, 190, 23);
-		btnDelTab.setBounds(7, 570, 431, 23);
+		btnAddTab.setBounds(805, 54, 115, 23);
+		btnDelTab.setBounds(805, 279, 251, 23);
 		jTabbedPane.setBounds(7, 33, 788, 235);
-		btnRollback.setBounds(448, 469, 347, 23);
-		tablePane.setBounds(7, 313, 431, 246);
-		btnCommit.setBounds(448, 279, 347, 173);
+		btnRollback.setBounds(405, 279, 390, 52);
+		transactionsTablePane.setBounds(805, 88, 251, 180);
+		btnCommit.setBounds(7, 279, 390, 52);
 
 		jPanel.add(btnAddTab);
 
@@ -85,14 +103,23 @@ public class RightSplit implements ActionListener {
 		jPanel.add(btnDelTab);
 		jPanel.add(btnCommit);
 		jPanel.add(jTabbedPane);
-		jPanel.add(tablePane);
-		jPanel.add(tablePane, "cell 0 2 3 1,grow");
+		
+		jPanel.add(transactionsTablePane);
+		jPanel.add(transactionsTablePane, "cell 0 2 3 1,grow");
+		jPanel.add(resultsTablePane);
+		resultsTablePane.setBounds(10, 342, 1046, 247);
 
-		txtNewTransactionsName.setBounds(210, 279, 228, 32);
+		jPanel.add(jMenuBar);
+		
+
+		
+		
+		
+		txtNewTransactionsName.setBounds(932, 54, 124, 23);
 		jPanel.add(txtNewTransactionsName);
 		txtNewTransactionsName.setColumns(10);
-		jMenuBar.setBounds(0, 0, 800, 21);
-		jPanel.add(jMenuBar);
+		jMenuBar.setBounds(0, 0, 1100, 21);
+
 
 		// for file
 		file.add(startClient);
@@ -114,6 +141,7 @@ public class RightSplit implements ActionListener {
 		btnAddTab.addActionListener(act);
 		btnDelTab.addActionListener(act);
 		btnCommit.addActionListener(act);
+		
 
 	}
 
@@ -121,42 +149,49 @@ public class RightSplit implements ActionListener {
 		return jPanel;
 	}
 
-	//populates/refreshes table based on array list
+	// populates/refreshes table based on array list
 	public void populateTransactionsTable() {
-		model = new DefaultTableModel(column_names, 0);
+		transactionsTableModel = new DefaultTableModel(transaction_column_names, 0);
 
 		for (int i = 0; i < transactions.size(); i++) {
-			model.addRow(new Object[] { transactions.get(i) });
+			transactionsTableModel.addRow(new Object[] { transactions.get(i) });
 		}
-		model.fireTableDataChanged();
+		transactionsTableModel.fireTableDataChanged();
 
-		table.setModel(model);
-		tablePane.repaint();
+		transactionsTable.setModel(transactionsTableModel);
+		transactionsTablePane.repaint();
 		jPanel.repaint();
 		jPanel.revalidate();
 	}
 
-
 	// adds transactions to arraylist then refreshses table
 	public void addTransactions() {
-		jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
+		
+		try {
+			jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		transactions.add(txtNewTransactionsName.getText());
 
 		populateTransactionsTable();
 	}
-	
-	//deletes transactions and refreshes table
-	public void deleteTransactions(){
-		int row = table.getSelectedRow();
-		int column = table.getColumnCount();
 
-		int index = jTabbedPane.indexOfTab(table.getValueAt(row, 0).toString());
+	// deletes transactions and refreshes table
+	public void deleteTransactions() {
+		int row = transactionsTable.getSelectedRow();
+		int column = transactionsTable.getColumnCount();
+
+		int index = jTabbedPane.indexOfTab(transactionsTable.getValueAt(row, 0).toString());
 		if (index >= 0) {
 			jTabbedPane.removeTabAt(index);
 		}
-		transactions.remove(table.getValueAt(row, 0).toString());
+		transactions.remove(transactionsTable.getValueAt(row, 0).toString());
 		populateTransactionsTable();
 	}
+	
+
 
 	private class ActListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -166,6 +201,15 @@ public class RightSplit implements ActionListener {
 
 			if (e.getSource() == btnDelTab) {
 				deleteTransactions();
+			}
+			if(e.getSource() == btnCommit){
+			
+//			udpClient.ExecuteQuery(query);
+				
+				
+			
+			
+				
 			}
 
 		}
