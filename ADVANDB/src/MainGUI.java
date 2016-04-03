@@ -16,7 +16,6 @@ public class MainGUI {
 			
 	
 	public MainGUI(){
-		  
 		frame.setLayout(new BorderLayout());
 		rightScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		rightScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -77,10 +76,10 @@ public class MainGUI {
 		leftJPanel.repaint();
 	}
 	
-	public void removeAllLeftSplit()
-	{
-		leftJPanel.removeAll();
-		frame.revalidate(); // For Java 1.7 or above
+		public void removeAllLeftSplit()
+		{
+			leftJPanel.removeAll();
+			frame.revalidate(); // For Java 1.7 or above
 		frame.repaint();
 	}
 	
