@@ -78,11 +78,7 @@ public class RightSplit implements ActionListener  {
 		jPanel.setSize(1100, 600);
 
 		
-		// default transaction
-		TransactionTab defaultTransaction = new TransactionTab(mainGUI);
-		transactions.add("Default");
-		jTabbedPane.addTab("Default", defaultTransaction.getJPanel());
-
+	
 		// for the transactions table
 		transactionsTable.setModel(transactionsTableModel);
 		transactionsTablePane = new JScrollPane(transactionsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -223,8 +219,10 @@ public class RightSplit implements ActionListener  {
 				deleteTransactions();
 			}
 			if(e.getSource() == btnCommit){
-				System.out.println(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex()));	
-				areas.get("new").getText())
+				System.out.println(jTabbedPane.getName(jTabbedPane.getSelectedIndex()));
+				
+			
+				
 			}
 
 		}

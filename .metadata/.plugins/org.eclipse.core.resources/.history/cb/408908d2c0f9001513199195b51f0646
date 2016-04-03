@@ -223,8 +223,10 @@ public class RightSplit implements ActionListener  {
 				deleteTransactions();
 			}
 			if(e.getSource() == btnCommit){
-				System.out.println(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex()));	
-				areas.get("new").getText())
+				jTabbedPane.getSelectedIndex();
+				System.out.println(jTabbedPane.getName());
+			
+				
 			}
 
 		}

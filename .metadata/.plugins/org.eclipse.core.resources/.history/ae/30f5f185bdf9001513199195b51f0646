@@ -1,8 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import com.sun.javafx.collections.MappingChange.Map;
-
 import javafx.scene.control.ScrollPane;
 
 import java.awt.*;
@@ -10,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -64,9 +61,6 @@ public class RightSplit implements ActionListener  {
 	
 	private UDPClient udpClient;
 	private UDPServer udpServer;
-	
-	private final HashMap<String, JTextArea> areas = new HashMap<String, JTextArea>();
-
 
 	public RightSplit(MainGUI mainGUI) throws Exception {
 		
@@ -169,30 +163,16 @@ public class RightSplit implements ActionListener  {
 		jPanel.repaint();
 		jPanel.revalidate();
 	}
-	
-	
-	public void newTab(String tab){
-	      JPanel p = new JPanel();
-	      JTextArea tArea = new JTextArea("transactions here");
-	      p.add(tArea);
-	      jTabbedPane.add(tab, p);
-	      areas.put(tab, tArea);
-			
-	}
 
 	// adds transactions to arraylist then refreshses table
 	public void addTransactions() {
 		
-	
-			JPanel p = new JPanel();
-		      JTextArea tArea = new JTextArea("Transactions here");
-		      p.add(tArea);
-		      jTabbedPane.add(txtNewTransactionsName.getText(), p);
-		      areas.put("new", tArea);
-		      System.out.println(areas.get("new").getText());
-		      
-//			jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
-
+		try {
+			jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		transactions.add(txtNewTransactionsName.getText());
 
 		populateTransactionsTable();
@@ -223,8 +203,13 @@ public class RightSplit implements ActionListener  {
 				deleteTransactions();
 			}
 			if(e.getSource() == btnCommit){
-				System.out.println(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex()));	
-				areas.get("new").getText())
+			
+//			udpClient.ExecuteQuery(query);
+				
+				
+			
+			
+				
 			}
 
 		}

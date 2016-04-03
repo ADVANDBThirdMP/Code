@@ -19,7 +19,6 @@ public class TransactionTab extends JPanel implements ActionListener {
 	private MainGUI mainGUI;
 	private JButton btnRun;
 	private UDPClient udpClient;
-	public static JTextArea txtTransactionQuery;
 	
 	public TransactionTab(MainGUI mainGUI) throws Exception {
 
@@ -35,7 +34,7 @@ public class TransactionTab extends JPanel implements ActionListener {
 		gbl_jPanel.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		jPanel.setLayout(gbl_jPanel);
 		
-		txtTransactionQuery = new JTextArea();
+		JTextArea txtTransactionQuery = new JTextArea();
 		GridBagConstraints gbc_txtTransactionQuery = new GridBagConstraints();
 		gbc_txtTransactionQuery.gridheight = 7;
 		gbc_txtTransactionQuery.gridwidth = 18;

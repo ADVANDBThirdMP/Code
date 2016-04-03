@@ -173,26 +173,21 @@ public class RightSplit implements ActionListener  {
 	
 	public void newTab(String tab){
 	      JPanel p = new JPanel();
-	      JTextArea tArea = new JTextArea("transactions here");
+	      JTextArea tArea = new JTextArea();
 	      p.add(tArea);
 	      jTabbedPane.add(tab, p);
 	      areas.put(tab, tArea);
-			
 	}
 
 	// adds transactions to arraylist then refreshses table
 	public void addTransactions() {
 		
-	
-			JPanel p = new JPanel();
-		      JTextArea tArea = new JTextArea("Transactions here");
-		      p.add(tArea);
-		      jTabbedPane.add(txtNewTransactionsName.getText(), p);
-		      areas.put("new", tArea);
-		      System.out.println(areas.get("new").getText());
-		      
-//			jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
-
+		try {
+			jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		transactions.add(txtNewTransactionsName.getText());
 
 		populateTransactionsTable();
@@ -223,8 +218,13 @@ public class RightSplit implements ActionListener  {
 				deleteTransactions();
 			}
 			if(e.getSource() == btnCommit){
-				System.out.println(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex()));	
-				areas.get("new").getText())
+			
+//			udpClient.ExecuteQuery(query);
+				
+				
+			
+			
+				
 			}
 
 		}
