@@ -6,7 +6,6 @@ import javafx.scene.control.ScrollPane;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 
 import net.miginfocom.swing.MigLayout;
@@ -72,7 +71,7 @@ public class RightSplit implements ActionListener {
 		//populate transactions table based on transactions arraylist
 		populateTransactionsTable();
 
-
+		
 		
 		btnAddTab.setBounds(10, 279, 190, 23);
 		btnDelTab.setBounds(7, 570, 431, 23);
@@ -125,7 +124,6 @@ public class RightSplit implements ActionListener {
 		return jPanel;
 	}
 
-	
 	public void populateTransactionsTable() {
 		for (int i = 0; i < transactions.size(); i++) {
 			model.addRow(new Object[] { transactions.get(i) });
@@ -138,41 +136,33 @@ public class RightSplit implements ActionListener {
 		}
 
 	}
-	//adds transactions to arraylist then refreshses table
+
 	public void addTransactions() {
 		jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
 		transactions.add(txtNewTransactionsName.getText());
 
 		model = new DefaultTableModel(column_names, 0);
 
-		populateTransactionsTable();
+		for (int i = 0; i < transactions.size(); i++) {
+			model.addRow(new Object[] { transactions.get(i) });
+		}
+		table.setModel(model);
 	}
-	
 
 	private class ActListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == btnAddTab) {
 				addTransactions();
 			}
-			
 			if (e.getSource() == btnDelTab) {
-				int row = table.getSelectedRow();
-				int column = table.getColumnCount();
-				
-
-				int index = jTabbedPane.indexOfTab(table.getValueAt(row, 0).toString());
+				int index = jTabbedPane.indexOfTab("Glenn");
 				if (index >= 0) {
 					jTabbedPane.removeTabAt(index);
 				}
-				populateTransactionsTable();
 			}
-			
-			
 
 		}
 	}
-	
-	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

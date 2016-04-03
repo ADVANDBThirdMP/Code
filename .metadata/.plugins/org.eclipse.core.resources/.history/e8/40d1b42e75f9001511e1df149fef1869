@@ -164,7 +164,6 @@ public class RightSplit implements ActionListener {
 				if (index >= 0) {
 					jTabbedPane.removeTabAt(index);
 				}
-				populateTransactionsTable();
 			}
 			
 			

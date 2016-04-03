@@ -6,7 +6,6 @@ import javafx.scene.control.ScrollPane;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 
 import net.miginfocom.swing.MigLayout;
@@ -18,6 +17,7 @@ public class RightSplit implements ActionListener {
 	private DBConnect db = new DBConnect();
 	private MainGUI mainGUI;
 
+	
 	//transactionstable
 	private JTabbedPane jTabbedPane = new JTabbedPane();
 	private ArrayList<String> transactions = new ArrayList<String>();
@@ -26,13 +26,17 @@ public class RightSplit implements ActionListener {
 	private DefaultTableModel model = new DefaultTableModel(column_names, 0);
 	private JScrollPane tablePane;
 	
-	//buttons
 	private final JButton btnCommit = new JButton("COMMIT");
 	private final JButton btnRollback = new JButton("ROLLBACK");
+
+
+
 	private JButton btnAddTab = new JButton("Add Trans");
 	private JButton btnDelTab = new JButton("Del Trans");
 
 	private ActListener act = new ActListener();
+
+
 
 	private JTextField txtNewTransactionsName = new JTextField();
 	
@@ -72,7 +76,7 @@ public class RightSplit implements ActionListener {
 		//populate transactions table based on transactions arraylist
 		populateTransactionsTable();
 
-
+		
 		
 		btnAddTab.setBounds(10, 279, 190, 23);
 		btnDelTab.setBounds(7, 570, 431, 23);
@@ -125,7 +129,6 @@ public class RightSplit implements ActionListener {
 		return jPanel;
 	}
 
-	
 	public void populateTransactionsTable() {
 		for (int i = 0; i < transactions.size(); i++) {
 			model.addRow(new Object[] { transactions.get(i) });
@@ -138,41 +141,33 @@ public class RightSplit implements ActionListener {
 		}
 
 	}
-	//adds transactions to arraylist then refreshses table
+
 	public void addTransactions() {
 		jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
 		transactions.add(txtNewTransactionsName.getText());
 
 		model = new DefaultTableModel(column_names, 0);
 
-		populateTransactionsTable();
+		for (int i = 0; i < transactions.size(); i++) {
+			model.addRow(new Object[] { transactions.get(i) });
+		}
+		table.setModel(model);
 	}
-	
 
 	private class ActListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == btnAddTab) {
 				addTransactions();
 			}
-			
 			if (e.getSource() == btnDelTab) {
-				int row = table.getSelectedRow();
-				int column = table.getColumnCount();
-				
-
-				int index = jTabbedPane.indexOfTab(table.getValueAt(row, 0).toString());
+				int index = jTabbedPane.indexOfTab("Glenn");
 				if (index >= 0) {
 					jTabbedPane.removeTabAt(index);
 				}
-				populateTransactionsTable();
 			}
-			
-			
 
 		}
 	}
-	
-	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
