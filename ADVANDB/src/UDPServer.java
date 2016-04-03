@@ -4,6 +4,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 
+import javax.sql.rowset.CachedRowSet;
+
+import com.sun.rowset.CachedRowSetImpl;
+
 class UDPServer {
 	public static void main(String args[]) throws Exception {
 		DBConnect db = new DBConnect();
@@ -11,6 +15,8 @@ class UDPServer {
 		byte[] receiveData = new byte[1024];
 		byte[] sendResultSet = new byte[1024];
 		byte[] sendHandShake = new byte[1024];
+		byte[] sendColumnCount = new byte[1024];
+
 		while (true) {
 			// Creates a socket for receiving packets
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -39,10 +45,13 @@ class UDPServer {
 			            arrayList.add(resultSet.getString(i++));
 			        }
 			}
-//			// gives back the resultset to client
-//			ResultSetMetaData rsmd = resultSet.getMetaData();
 
-//			int columnCount = rsmd.getColumnCount();
+			
+			// gives back the resultset to client
+			ResultSetMetaData rsmd = resultSet.getMetaData();
+
+			String columnCount = Integer.toString(rsmd.getColumnCount());
+			sendColumnCount = columnCount.getBytes();
 
 //			// The column count starts from 1
 //			for (int i = 1; i <= columnCount; i++){
@@ -54,6 +63,12 @@ class UDPServer {
 //			
 //			}
 			
+//			CachedRowSet queryResult = new CachedRowSetImpl();
+//			queryResult.populate(resultSet); 
+//			
+//			
+//			queryResult.getByte(numberOfColumns);
+//			
 			// write to byte array
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			DataOutputStream out = new DataOutputStream(baos);
@@ -64,8 +79,19 @@ class UDPServer {
 			
 			DatagramPacket returnHandShake = new DatagramPacket(sendHandShake, sendHandShake.length, IPAddress, port);
 			serverSocket.send(returnHandShake);
-			DatagramPacket returnResultSetArray = new DatagramPacket(bytes, bytes.length, IPAddress, port);
-			serverSocket.send(returnResultSetArray);
+			
+			DatagramPacket returnSizeResultSetArrayinBytes = new DatagramPacket(sendColumnCount,sendColumnCount.length, IPAddress, port);
+			serverSocket.send(returnSizeResultSetArrayinBytes);
+			
+
+			DatagramPacket returnResultSetArrayinBytes = new DatagramPacket(bytes, bytes.length, IPAddress, port);
+			serverSocket.send(returnResultSetArrayinBytes);
+			
+	
+			
+		
+//			DatagramPacket returnResultSetArray = new DatagramPacket(, IPAddress, port);
+//			serverSocket.send(returnResultSetArray);
 			
 			
 		}

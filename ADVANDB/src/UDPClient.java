@@ -77,6 +77,24 @@ class UDPClient {
 			System.out.println("Patay si server");
 		}
 		
+
+		try {
+			clientSocket.receive(receivePacket);
+			String handshake = new String(receivePacket.getData());
+			
+			// some condition here.
+			if (receivePacket.getData() != null) {
+				System.out.println("Size" + handshake);
+			}
+			// if met..
+			System.out.println("Buhay si server");
+
+		} catch (Exception e) {
+			System.out.println("Patay si server");
+		}
+		
+
+		
 		try {
 			clientSocket.receive(receivePacket);
 			String handshake = new String(receivePacket.getData());
@@ -99,8 +117,8 @@ class UDPClient {
 		} catch (Exception e) {
 			System.out.println("Patay si server");
 		}
-	
-
+		
+		
 	
 	}
 }
