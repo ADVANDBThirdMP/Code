@@ -73,7 +73,7 @@ class UDPClient {
 		
 	}
 
-	public DataInputStream commitQuery() throws IOException {
+	public void commitQuery() throws IOException {
 
 //		clientSocket.setSoTimeout((int) 5000);
 
@@ -92,16 +92,16 @@ class UDPClient {
 			System.out.println("Server is down");
 		}
 
-		//for size of queried table row count
+		//for size of queried table column count
 		try {
 			clientSocket.receive(receivePacket);
-			String queriedTableRowCount = new String(receivePacket.getData());
-			System.out.println("shit");
-
+			String queriedTableColumnCount = new String(receivePacket.getData());
 
 			if (receivePacket.getData() != null) {
-				System.out.println("Size" + queriedTableRowCount);
+				System.out.println("Size" + queriedTableColumnCount);
 			}
+			
+			
 			System.out.println("Server is up");
 		} catch (Exception e) {
 			System.out.println("Server is down");
@@ -125,7 +125,9 @@ class UDPClient {
 		} catch (Exception e) {
 			System.out.println("Server is down");
 		}
+	}
+	
+	public DataInputStream getTable(){
 		return in;
-
 	}
 }
