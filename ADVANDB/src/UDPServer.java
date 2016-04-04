@@ -17,7 +17,7 @@ class UDPServer{
 	private byte[] sendHandShake = new byte[1024];
 	private byte[] sendColumnCount = new byte[1024];
 	
-	
+	private String nothing;
 	private DatagramPacket receivePacket;
 
 	public UDPServer() throws Exception{

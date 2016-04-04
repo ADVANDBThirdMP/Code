@@ -14,6 +14,8 @@ public class MainGUI {
 	private LeftSplit leftSplit;
 	private RightSplit rightSplit;
 			
+	//	private String nothing;
+
 	
 	public MainGUI() throws Exception{
 		

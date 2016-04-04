@@ -72,6 +72,8 @@ class UDPClient {
 		
 		
 	}
+	//	private String nothing;
+
 
 	public void commitQuery() throws IOException {
 
