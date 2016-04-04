@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,17 +77,12 @@ public class RightSplit implements ActionListener {
 
 		jPanel.setLayout(null);
 		jPanel.setSize(1100, 600);
-	
-		
-		
-		
-		
 
 		// for the transactions table
 		transactionsTable.setModel(transactionsTableModel);
 		transactionsTablePane = new JScrollPane(transactionsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+
 		// default transactions
 		JPanel p = new JPanel();
 		p.setLayout(null);
@@ -94,9 +90,9 @@ public class RightSplit implements ActionListener {
 		tArea.setLocation(10, 0);
 		tArea.setLineWrap(true);
 		tArea.setSize(new Dimension(773, 196));
-		
+
 		p.add(tArea);
-		
+
 		jTabbedPane.add("Default", p);
 		areas.put("Default", tArea);
 
@@ -188,9 +184,9 @@ public class RightSplit implements ActionListener {
 		tArea.setLocation(10, 0);
 		tArea.setLineWrap(true);
 		tArea.setSize(new Dimension(773, 196));
-		
+
 		p.add(tArea);
-		
+
 		jTabbedPane.add(newTabName, p);
 		areas.put(newTabName, tArea);
 
@@ -201,18 +197,18 @@ public class RightSplit implements ActionListener {
 	}
 
 	// adds transactions to arraylist then refreshses table
-//	public void addTransactions() {
-//
-//		JPanel p = new JPanel();
-//		JTextArea tArea = new JTextArea("Transactions here");
-//		p.add(tArea);
-//		jTabbedPane.add(txtNewTransactionsName.getText(), p);
-//		areas.put(txtNewTransactionsName.getText(), tArea);
-//
-//		transactions.add(txtNewTransactionsName.getText());
-//
-//		populateTransactionsTable();
-//	}
+	// public void addTransactions() {
+	//
+	// JPanel p = new JPanel();
+	// JTextArea tArea = new JTextArea("Transactions here");
+	// p.add(tArea);
+	// jTabbedPane.add(txtNewTransactionsName.getText(), p);
+	// areas.put(txtNewTransactionsName.getText(), tArea);
+	//
+	// transactions.add(txtNewTransactionsName.getText());
+	//
+	// populateTransactionsTable();
+	// }
 
 	// deletes transactions and refreshes table
 	public void deleteTransactions() {
@@ -244,24 +240,24 @@ public class RightSplit implements ActionListener {
 						areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText().toString());
 
 				DataInputStream dataInputStream = null;
+
 				try {
-					dataInputStream = udpClient.handShakeAndGetQuery(areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText().toString());
+					dataInputStream = udpClient.handShakeAndGetQuery(
+							areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText());
+					try {
+						while (dataInputStream.available() > 0) {
+							String element = dataInputStream.readUTF();
+							System.out.println(element);
+						}
+					} catch (EOFException e1) {
+						// TODO Auto-generated catch block
+					}
+
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				try {
-					while (dataInputStream.available() > 0) {
-					String element = dataInputStream.readUTF();
-					System.out.println(element);
-}
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				
+
 			}
 
 		}

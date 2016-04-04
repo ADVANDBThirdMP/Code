@@ -17,6 +17,7 @@ class UDPServer{
 	private byte[] sendHandShake = new byte[1024];
 	private byte[] sendColumnCount = new byte[1024];
 	
+	
 	private DatagramPacket receivePacket;
 
 	public UDPServer() throws Exception{
@@ -30,14 +31,22 @@ class UDPServer{
 		while(true)
 		{
 			
-			System.out.println("shit1");
+			
+			
 			// Created socket receives packet and execute query
 			serverSocket.receive(receivePacket);
+						
+			String queryFromClient = new String(receivePacket.getData(), 0, receivePacket.getLength());
+			System.out.println("Yung putang query: " + queryFromClient);
 			
-			System.out.println("shit2");
-			String queryFromClient = new String(receivePacket.getData());
-			System.out.println(queryFromClient);
-			
+			if(queryFromClient.equals("select max(id) from hpq_alp")){
+				System.out.println("magkamuka sila");
+			}
+			else
+				System.out.println("di sila magkamuka");
+
+				
+//			queryFromClient = "Select max(id) from hpq_alp";
 			ResultSet resultSet = db.executeQuery(queryFromClient);
 			
 			System.out.println("result in udp server" + resultSet);
@@ -58,7 +67,6 @@ class UDPServer{
 				int i = 1;
 				while (i <= numberOfColumns) {
 					arrayList.add(resultSet.getString(i++));
-					System.out.println("shit");
 				}
 			}
 

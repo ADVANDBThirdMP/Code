@@ -55,9 +55,10 @@ public class DBConnect {
 	
 	public ResultSet executeQuery(String query)
 	{
+		System.out.println("query is: " + query);
 		ResultSet result = null;
 		try{
-			  PreparedStatement preparedStatement = (PreparedStatement) con.prepareStatement(query);
+			  PreparedStatement preparedStatement = (PreparedStatement) con.prepareStatement(query.toString());
 
 			rs = preparedStatement.executeQuery();
 			
@@ -70,6 +71,8 @@ public class DBConnect {
 		}
 		
 		return result;
+		
+		
 	}
 	
 }
