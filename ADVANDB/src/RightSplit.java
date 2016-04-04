@@ -9,12 +9,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.io.DataInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.miginfocom.swing.MigLayout;
 
-public class RightSplit implements ActionListener  {
+public class RightSplit implements ActionListener {
 
 	JPanel jPanel = new JPanel();
 
@@ -61,38 +62,52 @@ public class RightSplit implements ActionListener  {
 
 	private JMenuItem runSelected = new JMenuItem("Run");
 	private JMenuItem runAll = new JMenuItem("Run All");
-	
+
 	private UDPClient udpClient;
 	private UDPServer udpServer;
-	
+
 	private final HashMap<String, JTextArea> areas = new HashMap<String, JTextArea>();
 
-
 	public RightSplit(MainGUI mainGUI) throws Exception {
-		
-		
+
 		udpClient = new UDPClient();
 		this.mainGUI = mainGUI;
 
 		jPanel.setLayout(null);
 		jPanel.setSize(1100, 600);
-
+	
 		
-		// default transaction
-		TransactionTab defaultTransaction = new TransactionTab(mainGUI);
-		transactions.add("Default");
-		jTabbedPane.addTab("Default", defaultTransaction.getJPanel());
+		
+		
+		
 
 		// for the transactions table
 		transactionsTable.setModel(transactionsTableModel);
 		transactionsTablePane = new JScrollPane(transactionsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-		//for results table
+		// default transactions
+		JPanel p = new JPanel();
+		p.setLayout(null);
+		JTextArea tArea = new JTextArea("Transactions here");
+		tArea.setLocation(10, 0);
+		tArea.setLineWrap(true);
+		tArea.setSize(new Dimension(773, 196));
+		
+		p.add(tArea);
+		
+		jTabbedPane.add("Default", p);
+		areas.put("Default", tArea);
+
+		transactions.add("Default");
+
+		populateTransactionsTable();
+
+		// for results table
 		resultTable.setModel(resultsTableModel);
 		resultsTablePane = new JScrollPane(resultTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+
 		// populate transactions table based on transactions arraylist
 		populateTransactionsTable();
 
@@ -109,23 +124,18 @@ public class RightSplit implements ActionListener  {
 		jPanel.add(btnDelTab);
 		jPanel.add(btnCommit);
 		jPanel.add(jTabbedPane);
-		
+
 		jPanel.add(transactionsTablePane);
 		jPanel.add(transactionsTablePane, "cell 0 2 3 1,grow");
 		jPanel.add(resultsTablePane);
 		resultsTablePane.setBounds(10, 342, 1046, 247);
 
 		jPanel.add(jMenuBar);
-		
 
-		
-		
-		
 		txtNewTransactionsName.setBounds(932, 54, 124, 23);
 		jPanel.add(txtNewTransactionsName);
 		txtNewTransactionsName.setColumns(10);
 		jMenuBar.setBounds(0, 0, 1100, 21);
-
 
 		// for file
 		file.add(startClient);
@@ -147,7 +157,6 @@ public class RightSplit implements ActionListener  {
 		btnAddTab.addActionListener(act);
 		btnDelTab.addActionListener(act);
 		btnCommit.addActionListener(act);
-		
 
 	}
 
@@ -169,34 +178,40 @@ public class RightSplit implements ActionListener  {
 		jPanel.repaint();
 		jPanel.revalidate();
 	}
-	
-	
-	public void newTab(String tab){
-	      JPanel p = new JPanel();
-	      JTextArea tArea = new JTextArea("transactions here");
-	      p.add(tArea);
-	      jTabbedPane.add(tab, p);
-	      areas.put(tab, tArea);
-			
+
+	public void addTransactions(String tab) {
+		String newTabName = tab;
+		JPanel p = new JPanel();
+		p.setLayout(null);
+		JTextArea tArea = new JTextArea("Transactions here");
+		tArea.setLocation(10, 0);
+		tArea.setLineWrap(true);
+		tArea.setSize(new Dimension(773, 196));
+		
+		p.add(tArea);
+		
+		jTabbedPane.add(newTabName, p);
+		areas.put(newTabName, tArea);
+
+		transactions.add(newTabName);
+
+		populateTransactionsTable();
+
 	}
 
 	// adds transactions to arraylist then refreshses table
-	public void addTransactions() {
-		
-	
-			JPanel p = new JPanel();
-		      JTextArea tArea = new JTextArea("Transactions here");
-		      p.add(tArea);
-		      jTabbedPane.add(txtNewTransactionsName.getText(), p);
-		      areas.put("new", tArea);
-		      System.out.println(areas.get("new").getText());
-		      
-//			jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
-
-		transactions.add(txtNewTransactionsName.getText());
-
-		populateTransactionsTable();
-	}
+//	public void addTransactions() {
+//
+//		JPanel p = new JPanel();
+//		JTextArea tArea = new JTextArea("Transactions here");
+//		p.add(tArea);
+//		jTabbedPane.add(txtNewTransactionsName.getText(), p);
+//		areas.put(txtNewTransactionsName.getText(), tArea);
+//
+//		transactions.add(txtNewTransactionsName.getText());
+//
+//		populateTransactionsTable();
+//	}
 
 	// deletes transactions and refreshes table
 	public void deleteTransactions() {
@@ -210,21 +225,31 @@ public class RightSplit implements ActionListener  {
 		transactions.remove(transactionsTable.getValueAt(row, 0).toString());
 		populateTransactionsTable();
 	}
-	
-
 
 	private class ActListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == btnAddTab) {
-				addTransactions();
+				addTransactions(txtNewTransactionsName.getText());
 			}
 
 			if (e.getSource() == btnDelTab) {
 				deleteTransactions();
 			}
-			if(e.getSource() == btnCommit){
-				System.out.println(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex()));	
-				areas.get("new").getText())
+			if (e.getSource() == btnCommit) {
+				System.out.println(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex()));
+				// System.out.println(areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText().toString());
+
+				System.out.println(
+						areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText().toString());
+
+				try {
+					DataInputStream dataInputStream = udpClient.handShakeAndGetQuery(areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText().toString());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
 			}
 
 		}

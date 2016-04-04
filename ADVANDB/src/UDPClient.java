@@ -20,7 +20,7 @@ class UDPClient {
 
 	}
 
-	public void handShakeAndGetQuery(String query) throws Exception {
+	public DataInputStream handShakeAndGetQuery(String query) throws Exception {
 		System.out.println("App started");
 		// Gets input from user
 		
@@ -50,10 +50,12 @@ class UDPClient {
 		// Waits for reply/acknowledgement from server
 		receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
+		DataInputStream inputStream = null;
+		
 		try {
 
 			//passes receivePacket
-			commitQuery();
+			inputStream = commitQuery();
 
 		} catch (SocketTimeoutException e) {
 			e.printStackTrace();
@@ -64,6 +66,11 @@ class UDPClient {
 		// } while (!sentence.equals("stop"));
 
 		clientSocket.close();
+		
+		return inputStream;
+		
+		
+		
 	}
 
 	public DataInputStream commitQuery() throws IOException {

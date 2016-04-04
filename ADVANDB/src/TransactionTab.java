@@ -26,31 +26,15 @@ public class TransactionTab extends JPanel implements ActionListener {
 		this.mainGUI = mainGUI;
 	
 		udpClient = new UDPClient();
-	    
-		
-		GridBagLayout gbl_jPanel = new GridBagLayout();
-		gbl_jPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_jPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_jPanel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_jPanel.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		jPanel.setLayout(gbl_jPanel);
+		jPanel.setLayout(null);
 		
 		txtTransactionQuery = new JTextArea();
-		GridBagConstraints gbc_txtTransactionQuery = new GridBagConstraints();
-		gbc_txtTransactionQuery.gridheight = 7;
-		gbc_txtTransactionQuery.gridwidth = 18;
-		gbc_txtTransactionQuery.insets = new Insets(0, 0, 5, 5);
-		gbc_txtTransactionQuery.fill = GridBagConstraints.BOTH;
-		gbc_txtTransactionQuery.gridx = 1;
-		gbc_txtTransactionQuery.gridy = 1;
-		jPanel.add(txtTransactionQuery, gbc_txtTransactionQuery);
+		txtTransactionQuery.setBounds(30, 30, 535, 207);
+		jPanel.add(txtTransactionQuery);
 		
 		btnRun = new JButton("Run");
-		GridBagConstraints gbc_btnRun = new GridBagConstraints();
-		gbc_btnRun.insets = new Insets(0, 0, 5, 5);
-		gbc_btnRun.gridx = 18;
-		gbc_btnRun.gridy = 8;
-		jPanel.add(btnRun, gbc_btnRun);
+		btnRun.setBounds(514, 242, 51, 23);
+		jPanel.add(btnRun);
 		
 		jPanel.setSize(600, 300);
 
