@@ -1,0 +1,105 @@
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import javafx.scene.control.ScrollPane;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.util.ArrayList;
+
+import net.miginfocom.swing.MigLayout;
+
+public class ServerGUI implements ActionListener  {
+
+	private UDPServer udpServer;
+	private MainGUI mainGUI
+
+	public ServerGUI(MainGUI mainGUI) throws Exception {
+		
+		
+		udpServer = new UDPServer();
+
+		this.mainGUI = mainGUI;
+
+		jPanel.setLayout(null);
+		jPanel.setSize(1100, 600);
+
+		
+
+	}
+
+	public JPanel getJPanel() {
+		return jPanel;
+	}
+
+	// populates/refreshes table based on array list
+	public void populateTransactionsTable() {
+		transactionsTableModel = new DefaultTableModel(transaction_column_names, 0);
+
+		for (int i = 0; i < transactions.size(); i++) {
+			transactionsTableModel.addRow(new Object[] { transactions.get(i) });
+		}
+		transactionsTableModel.fireTableDataChanged();
+
+		transactionsTable.setModel(transactionsTableModel);
+		transactionsTablePane.repaint();
+		jPanel.repaint();
+		jPanel.revalidate();
+	}
+
+	// adds transactions to arraylist then refreshses table
+	public void addTransactions() {
+		
+		try {
+			jTabbedPane.addTab(txtNewTransactionsName.getText(), new TransactionTab(mainGUI).getJPanel());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		transactions.add(txtNewTransactionsName.getText());
+
+		populateTransactionsTable();
+	}
+
+	// deletes transactions and refreshes table
+	public void deleteTransactions() {
+		int row = transactionsTable.getSelectedRow();
+		int column = transactionsTable.getColumnCount();
+
+		int index = jTabbedPane.indexOfTab(transactionsTable.getValueAt(row, 0).toString());
+		if (index >= 0) {
+			jTabbedPane.removeTabAt(index);
+		}
+		transactions.remove(transactionsTable.getValueAt(row, 0).toString());
+		populateTransactionsTable();
+	}
+
+	private class ActListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == btnAddTab) {
+				addTransactions();
+			}
+
+			if (e.getSource() == btnDelTab) {
+				deleteTransactions();
+			}
+			if(e.getSource() == btnCommit){
+			
+//			udpClient.ExecuteQuery(query);
+				
+			Component wala = jTabbedPane.getComponentAt(1);
+			System.out.println(wala);
+				
+			}
+
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+}

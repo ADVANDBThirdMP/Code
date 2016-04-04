@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -242,9 +243,20 @@ public class RightSplit implements ActionListener {
 				System.out.println(
 						areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText().toString());
 
+				DataInputStream dataInputStream = null;
 				try {
-					DataInputStream dataInputStream = udpClient.handShakeAndGetQuery(areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText().toString());
+					dataInputStream = udpClient.handShakeAndGetQuery(areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText().toString());
 				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				try {
+					while (dataInputStream.available() > 0) {
+					String element = dataInputStream.readUTF();
+					System.out.println(element);
+}
+				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

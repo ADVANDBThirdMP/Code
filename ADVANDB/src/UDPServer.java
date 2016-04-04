@@ -36,7 +36,11 @@ class UDPServer{
 			
 			System.out.println("shit2");
 			String queryFromClient = new String(receivePacket.getData());
+			System.out.println(queryFromClient);
+			
 			ResultSet resultSet = db.executeQuery(queryFromClient);
+			
+			System.out.println("result in udp server" + resultSet);
 
 			// Using received packet I get address and port number
 			InetAddress IPAddress = receivePacket.getAddress();
@@ -54,6 +58,7 @@ class UDPServer{
 				int i = 1;
 				while (i <= numberOfColumns) {
 					arrayList.add(resultSet.getString(i++));
+					System.out.println("shit");
 				}
 			}
 

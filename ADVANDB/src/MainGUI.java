@@ -33,6 +33,7 @@ public class MainGUI {
 		leftJPanel.setLayout(new BorderLayout());
 
 		
+		
         frame.add(splitPane, BorderLayout.CENTER);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

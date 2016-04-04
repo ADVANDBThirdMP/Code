@@ -1,0 +1,83 @@
+
+import javax.swing.*;
+
+
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import net.miginfocom.swing.MigLayout;
+
+public class TransactionTab extends JPanel implements ActionListener {
+
+	
+	
+	
+	JPanel jPanel = new JPanel();
+	
+	private DBConnect db = new DBConnect();
+	private MainGUI mainGUI;
+
+	
+	public TransactionTab(MainGUI mainGUI) {
+
+		this.mainGUI = mainGUI;
+	
+	    
+		
+		GridBagLayout gbl_jPanel = new GridBagLayout();
+		gbl_jPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_jPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_jPanel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_jPanel.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		jPanel.setLayout(gbl_jPanel);
+		
+		JTextArea txtTransactionQuery = new JTextArea();
+		GridBagConstraints gbc_txtTransactionQuery = new GridBagConstraints();
+		gbc_txtTransactionQuery.gridheight = 7;
+		gbc_txtTransactionQuery.gridwidth = 18;
+		gbc_txtTransactionQuery.insets = new Insets(0, 0, 5, 5);
+		gbc_txtTransactionQuery.fill = GridBagConstraints.BOTH;
+		gbc_txtTransactionQuery.gridx = 1;
+		gbc_txtTransactionQuery.gridy = 1;
+		jPanel.add(txtTransactionQuery, gbc_txtTransactionQuery);
+		
+		btnRun = new JButton("Run");
+		GridBagConstraints gbc_btnRun = new GridBagConstraints();
+		gbc_btnRun.insets = new Insets(0, 0, 5, 5);
+		gbc_btnRun.gridx = 18;
+		gbc_btnRun.gridy = 8;
+		jPanel.add(btnRun, gbc_btnRun);
+		
+		jPanel.setSize(600, 300);
+
+
+	}
+
+
+	public JPanel getJPanel() {
+		return jPanel;
+	}
+
+	private class ActListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+			if (e.getSource() == btn) {
+
+			}
+
+			else {
+		
+			}
+		}
+
+	}
+
+	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+}

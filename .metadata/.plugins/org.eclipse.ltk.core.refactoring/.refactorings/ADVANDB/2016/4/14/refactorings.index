@@ -6,3 +6,11 @@
 1459590658708	Copy compilation unit
 1459595117413	Delete element
 1459597086843	Rename field 'table'
+1459616155069	Rename field 'branch'
+1459616182416	Rename field 'account'
+1459616205510	Rename field 'report'
+1459616217055	Rename field 'Transaction'
+1459616321287	Rename field 'dailyReport'
+1459616348806	Rename field 'weeklyReport'
+1459616397755	Rename field 'annualReport'
+1459616581876	Rename field 'removeBranch'

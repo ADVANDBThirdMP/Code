@@ -64,6 +64,7 @@ public class DBConnect {
 
 			result = rs;
 
+			System.out.println("resultset in db " + result);
 		}catch(Exception ex){
 			System.out.println(ex);
 		}

@@ -75,12 +75,14 @@ class UDPClient {
 
 	public DataInputStream commitQuery() throws IOException {
 
-		clientSocket.setSoTimeout((int) 5000);
+//		clientSocket.setSoTimeout((int) 5000);
 
 		//for handshake
 		try {
 			clientSocket.receive(receivePacket);
 			String handshake = new String(receivePacket.getData());
+			System.out.println("shit");
+
 
 			if (receivePacket.getData() != null) {
 				System.out.println("Server accepted handshake:" + handshake);
@@ -94,6 +96,8 @@ class UDPClient {
 		try {
 			clientSocket.receive(receivePacket);
 			String queriedTableRowCount = new String(receivePacket.getData());
+			System.out.println("shit");
+
 
 			if (receivePacket.getData() != null) {
 				System.out.println("Size" + queriedTableRowCount);
