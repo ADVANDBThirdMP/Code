@@ -13,6 +13,8 @@ class UDPClient {
 	static DatagramSocket clientSocket;
 
 	private DataInputStream in;
+	private DataInputStream in1;
+
 
 	private DatagramPacket sendQueryInDataGramPacket;
 	private String queriedTableColumnCount;
@@ -110,7 +112,7 @@ class UDPClient {
 			if (receivePacket.getData() != null) {
 
 				ByteArrayInputStream queriedTableInBytes = new ByteArrayInputStream(receivePacket.getData());
-				in = new DataInputStream(queriedTableInBytes);
+				in1 = new DataInputStream(queriedTableInBytes);
 //
 //				while (in.available() > 0) {
 //					String element = in.readUTF();
@@ -121,6 +123,24 @@ class UDPClient {
 		} catch (Exception e) {
 			System.out.println("Server is down");
 		}
+		
+		//for the queried table column names
+				try {
+					clientSocket.receive(receivePacket);
+					if (receivePacket.getData() != null) {
+
+						ByteArrayInputStream queriedTableColumnNamesInBytes = new ByteArrayInputStream(receivePacket.getData());
+						in = new DataInputStream(queriedTableColumnNamesInBytes);
+		//
+//						while (in.available() > 0) {
+//							String element = in.readUTF();
+//							System.out.println(element);
+//						}
+					}
+
+				} catch (Exception e) {
+					System.out.println("Server is down");
+				}
 	}
 	
 	public DataInputStream getTable(){
@@ -136,5 +156,9 @@ class UDPClient {
 	
 	public String getHandShake(){
 		return handShake;
+	}
+	
+	public DataInputStream getTableColumnNames(){
+		return in1;
 	}
 }

@@ -1,0 +1,36 @@
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import com.sun.rowset.CachedRowSetImpl;
+
+public class Model implements Serializable{
+	CachedRowSetImpl cas;
+	ArrayList<String> columnNames = new ArrayList<String>();
+	
+	public Model(){
+		
+	}
+	
+	public void setCas(CachedRowSetImpl cas){
+		this.cas = cas;
+	}
+	
+	public void setColumnNames(ArrayList columnNames){
+		this.columnNames = columnNames;
+	}
+	
+	public CachedRowSetImpl getCas(){
+		return cas;
+	}
+	
+	public ArrayList getColumnNames(){
+		return columnNames;
+	}
+
+	@Override
+	public String toString() {
+		return "Model [cas=" + cas + ", columnNames=" + columnNames + "]";
+	}
+
+	
+}

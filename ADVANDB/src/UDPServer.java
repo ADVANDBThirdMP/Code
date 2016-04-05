@@ -81,8 +81,25 @@ class UDPServer {
 			for (String element : arrayList) {
 				out.writeUTF(element);
 			}
+			
 			byte[] bytes = baos.toByteArray();
+			
+			
+			
+			ArrayList<String> columnNames = new ArrayList<String>();
+			for(int i = 1; i <= numberOfColumns; i++){
+				columnNames.add(metadata.getColumnName(i));
+			}
+			
+			ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+			DataOutputStream out1 = new DataOutputStream(baos1);
+			for (String element : arrayList) {
+				out1.writeUTF(element);
+			}
+			
+			byte[] bytes1 = baos1.toByteArray();
 
+			
 			DatagramPacket returnHandShake = new DatagramPacket(sendHandShake, sendHandShake.length, IPAddress, port);
 			serverSocket.send(returnHandShake);
 
@@ -90,9 +107,18 @@ class UDPServer {
 					IPAddress, port);
 			serverSocket.send(returnSizeResultSetArrayinBytes);
 
+			DatagramPacket returnResultSetColumnNamesArrayinBytes = new DatagramPacket(bytes1, bytes1.length, IPAddress, port);
+			serverSocket.send(returnResultSetColumnNamesArrayinBytes);
+			
 			DatagramPacket returnResultSetArrayinBytes = new DatagramPacket(bytes, bytes.length, IPAddress, port);
 			serverSocket.send(returnResultSetArrayinBytes);
+			
+			
 
+
+			
+			
+			
 		}
 	}
 
