@@ -105,7 +105,23 @@ class UDPClient {
 		} catch (Exception e) {
 			System.out.println("Server is down");
 		}
+		//for the queried table column names
+		try {
+			clientSocket.receive(receivePacket);
+			if (receivePacket.getData() != null) {
 
+				ByteArrayInputStream queriedTableColumnNamesInBytes = new ByteArrayInputStream(receivePacket.getData());
+				in1 = new DataInputStream(queriedTableColumnNamesInBytes);
+//
+//				while (in.available() > 0) {
+//					String element = in.readUTF();
+//					System.out.println(element);
+//				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("Server is down");
+		}
 		//for the queried table
 		try {
 			clientSocket.receive(receivePacket);
@@ -124,23 +140,7 @@ class UDPClient {
 			System.out.println("Server is down");
 		}
 		
-		//for the queried table column names
-				try {
-					clientSocket.receive(receivePacket);
-					if (receivePacket.getData() != null) {
-
-						ByteArrayInputStream queriedTableColumnNamesInBytes = new ByteArrayInputStream(receivePacket.getData());
-						in = new DataInputStream(queriedTableColumnNamesInBytes);
-		//
-//						while (in.available() > 0) {
-//							String element = in.readUTF();
-//							System.out.println(element);
-//						}
-					}
-
-				} catch (Exception e) {
-					System.out.println("Server is down");
-				}
+		
 	}
 	
 	public DataInputStream getTable(){

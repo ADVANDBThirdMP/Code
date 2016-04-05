@@ -82,6 +82,8 @@ class UDPServer {
 				out.writeUTF(element);
 			}
 			
+			
+			
 			byte[] bytes = baos.toByteArray();
 			
 			
@@ -93,7 +95,7 @@ class UDPServer {
 			
 			ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
 			DataOutputStream out1 = new DataOutputStream(baos1);
-			for (String element : arrayList) {
+			for (String element : columnNames) {
 				out1.writeUTF(element);
 			}
 			
