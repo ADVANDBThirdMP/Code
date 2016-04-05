@@ -67,6 +67,8 @@ public class RightSplit implements ActionListener {
 
 	private UDPClient udpClient;
 	private UDPServer udpServer;
+	
+	private HashMap<String, ArrayList> receivedTable;
 
 	private final HashMap<String, JTextArea> areas = new HashMap<String, JTextArea>();
 
@@ -82,6 +84,8 @@ public class RightSplit implements ActionListener {
 		transactionsTable.setModel(transactionsTableModel);
 		transactionsTablePane = new JScrollPane(transactionsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+	
 
 		// default transactions
 		JPanel p = new JPanel();
@@ -249,20 +253,76 @@ public class RightSplit implements ActionListener {
 					System.out.println("COULMNS: " + udpClient.getColumnCount());
 					System.out.println("NAGHANDSHAKE BA: "+ udpClient.getHandShake());
 					
+					
+					receivedTable = new HashMap<String, ArrayList>();
+					int i = 0;
+					String pk = "";
+					ArrayList<Object> dataPK = new ArrayList<Object>();
+					
 					try {
 						while (dataInputStream.available() > 0) {
-							String element = dataInputStream.readUTF();
 							
-							System.out.println(element);
+							String value = "";
+							
+							if(i == 0){
+								pk = dataInputStream.readUTF();
+							}
+							else{
+								value = dataInputStream.readUTF();
+								dataPK.add(value);
+							}
+							
+							
+							
+//							HashMap<String, ArrayList> receivedTable = new HashMap<String, ArrayList>();
+
+							//receivedTable.put(pk, dataPK);
+
+
+					/*		for(int i = 1; i<=udpClient.getColumnCount()-1; i++){
+								String body = dataInputStream.readUTF();
+								
+								ArrayList<Object> dataBody = new ArrayList<Object>();
+								dataBody.add(body);
+
+								receivedTable.put(pk, dataBody);
+							}
+							
+
+*/
+//							for (int i = 0; i < products.size(); i++) {
+//								resultsTableModel.add((new Object[] {element});
+//							}
+							
+							i++;
+							if(i == udpClient.getColumnCount()){
+								i = 0;
+								receivedTable.put(pk, dataPK);
+								dataPK = new ArrayList<Object>();
+							}
+							
+							for (int j = 0; j < receivedTable.size(); j++) {
+
+//								resultsTableModel.addRow(new Object[] {receivedTable.get(pk).toString()});
+							}
 						}
 					} catch (EOFException e1) {
 						// TODO Auto-generated catch block
 					}
-
+					
+					System.out.println(receivedTable.toString());
+					
+					
+					
+					
+					
+					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
+				
 
 			}
 
