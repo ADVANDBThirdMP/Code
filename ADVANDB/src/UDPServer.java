@@ -16,6 +16,8 @@ class UDPServer {
 	private byte[] sendResultSet = new byte[1024];
 	private byte[] sendHandShake = new byte[1024];
 	private byte[] sendColumnCount = new byte[1024];
+	private byte[] sendModel = new byte[1024];
+
 
 	private String nothing;
 	private DatagramPacket receivePacket;
@@ -52,7 +54,32 @@ class UDPServer {
 
 			// gives back the resultset to client
 			ResultSetMetaData rsmd = resultSet.getMetaData();
+			int numberOfColumns = rsmd.getColumnCount();
+			
 
+			// resultset = cachedrowsetimpl
+			CachedRowSetImpl cas = new CachedRowSetImpl();
+			cas.populate(resultSet);
+			
+			Model model = new Model();
+			ArrayList<String> columnNames = new ArrayList<String>();
+
+			for(int i = 1; i<=numberOfColumns; i++){
+				columnNames.add(rsmd.getColumnName(i));
+			}
+			
+			model.setCas(cas);
+			model.setColumnNames(columnNames);
+			
+			Object object = (Object) model;
+			
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			ObjectOutputStream os = new ObjectOutputStream(out);
+			os.writeObject(object);
+			
+			out.toByteArray();
+			
+			
 			sendColumnCount = null;
 			String columnCount = Integer.toString(rsmd.getColumnCount());
 
@@ -63,43 +90,8 @@ class UDPServer {
 			//dito nagawa yung dump na di elegant
 
 
-			
-			ResultSetMetaData metadata = resultSet.getMetaData();
-			int numberOfColumns = metadata.getColumnCount();
+			sendModel = out.toByteArray();
 
-			ArrayList<String> arrayList = new ArrayList<String>();
-			while (resultSet.next()) {
-				int i = 1;
-				while (i <= numberOfColumns) {
-					arrayList.add(resultSet.getString(i++));
-				}
-			}
-
-			// write to byte array
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			DataOutputStream out = new DataOutputStream(baos);
-			for (String element : arrayList) {
-				out.writeUTF(element);
-			}
-			
-			
-			
-			byte[] bytes = baos.toByteArray();
-			
-			
-			
-			ArrayList<String> columnNames = new ArrayList<String>();
-			for(int i = 1; i <= numberOfColumns; i++){
-				columnNames.add(metadata.getColumnName(i));
-			}
-			
-			ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-			DataOutputStream out1 = new DataOutputStream(baos1);
-			for (String element : columnNames) {
-				out1.writeUTF(element);
-			}
-			
-			byte[] bytes1 = baos1.toByteArray();
 
 			
 			DatagramPacket returnHandShake = new DatagramPacket(sendHandShake, sendHandShake.length, IPAddress, port);
@@ -109,11 +101,13 @@ class UDPServer {
 					IPAddress, port);
 			serverSocket.send(returnSizeResultSetArrayinBytes);
 
-			DatagramPacket returnResultSetColumnNamesArrayinBytes = new DatagramPacket(bytes1, bytes1.length, IPAddress, port);
-			serverSocket.send(returnResultSetColumnNamesArrayinBytes);
+			DatagramPacket returnModel = new DatagramPacket(sendModel, sendModel.length, IPAddress, port);
+			serverSocket.send(returnModel);
 			
-			DatagramPacket returnResultSetArrayinBytes = new DatagramPacket(bytes, bytes.length, IPAddress, port);
-			serverSocket.send(returnResultSetArrayinBytes);
+		
+			
+			
+				
 			
 			
 
@@ -125,3 +119,40 @@ class UDPServer {
 	}
 
 }
+
+//ResultSetMetaData metadata = resultSet.getMetaData();
+//int numberOfColumns = metadata.getColumnCount();
+//
+//ArrayList<String> arrayList = new ArrayList<String>();
+//while (resultSet.next()) {
+//	int i = 1;
+//	while (i <= numberOfColumns) {
+//		arrayList.add(resultSet.getString(i++));
+//	}
+//}
+//
+//// write to byte array
+//ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//DataOutputStream out = new DataOutputStream(baos);
+//for (String element : arrayList) {
+//	out.writeUTF(element);
+//}
+//
+//
+//
+//byte[] bytes = baos.toByteArray();
+//
+//
+//
+//ArrayList<String> columnNames = new ArrayList<String>();
+//for(int i = 1; i <= numberOfColumns; i++){
+//	columnNames.add(metadata.getColumnName(i));
+//}
+//
+//ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+//DataOutputStream out1 = new DataOutputStream(baos1);
+//for (String element : columnNames) {
+//	out1.writeUTF(element);
+//}
+//
+//byte[] bytes1 = baos1.toByteArray();

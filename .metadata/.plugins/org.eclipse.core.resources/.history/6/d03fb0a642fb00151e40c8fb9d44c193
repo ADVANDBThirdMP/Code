@@ -244,7 +244,7 @@ public class RightSplit implements ActionListener {
 						areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText().toString());
 
 				Model model = new Model();
-				model = null;
+				
 
 				
 				try {
@@ -252,9 +252,6 @@ public class RightSplit implements ActionListener {
 							areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText());
 					model = udpClient.getTable();
 
-					if(model == null){
-						System.out.println("BOOM NULL");;
-					}
 					System.out.println("COULMNS: " + udpClient.getColumnCount());
 					System.out.println("NAGHANDSHAKE BA: " + udpClient.getHandShake());
 
@@ -265,56 +262,56 @@ public class RightSplit implements ActionListener {
 
 					
 					
-					System.out.println(model.getCas().get);
-//					resultsTableModel = new DefaultTableModel(result_column_names, 0);
-//
-//					for (int i = 0; i < transactions.size(); i++) {
-//						transactionsTableModel.addRow(new Object[] { transactions.get(i) });
-//					}
-//					transactionsTableModel.fireTableDataChanged();
-//
-//					transactionsTable.setModel(transactionsTableModel);
-//					transactionsTablePane.repaint();
-//					jPanel.repaint();
-//					jPanel.revalidate();
-//					
-//					try {
-//						txtResult.setText("");
-//						while (dataInputStream.available() > 0) {
-//
-//							String value = "";
-//
-//							if (i == 0) {
-//								pk = dataInputStream.readUTF();
-//								txtResult.append("\n");
-//								txtResult.append(String.format("%-25s\t" + " ", pk));
-//
-//							} else {
-//								value = dataInputStream.readUTF();
-//								dataPK.add(value);
-//								txtResult.append(String.format("%-25s\t" + " ", value));
-//
-//							}
-//
-//							i++;
-//							if (i == udpClient.getColumnCount()) {
-//								i = 0;
-//								receivedTable.put(pk, dataPK);
-//								dataPK = new ArrayList<Object>();
-//							}
-//
-//							for (int j = 0; j < receivedTable.size(); j++) {
-//
-//								// resultsTableModel.addRow(new Object[]
-//								// {receivedTable.get(pk).toString()});
-//							}
-//						}
-//					} catch (EOFException e1) {
-//						// TODO Auto-generated catch block
-//					}
-//
-//					System.out.println(receivedTable.toString());
-//
+					resultsTableModel = new DefaultTableModel(result_column_names, 0);
+					TableContents tc = (TableContents) deserialize(mybytearray);
+
+					for (int i = 0; i < transactions.size(); i++) {
+						transactionsTableModel.addRow(new Object[] { transactions.get(i) });
+					}
+					transactionsTableModel.fireTableDataChanged();
+
+					transactionsTable.setModel(transactionsTableModel);
+					transactionsTablePane.repaint();
+					jPanel.repaint();
+					jPanel.revalidate();
+					
+					try {
+						txtResult.setText("");
+						while (dataInputStream.available() > 0) {
+
+							String value = "";
+
+							if (i == 0) {
+								pk = dataInputStream.readUTF();
+								txtResult.append("\n");
+								txtResult.append(String.format("%-25s\t" + " ", pk));
+
+							} else {
+								value = dataInputStream.readUTF();
+								dataPK.add(value);
+								txtResult.append(String.format("%-25s\t" + " ", value));
+
+							}
+
+							i++;
+							if (i == udpClient.getColumnCount()) {
+								i = 0;
+								receivedTable.put(pk, dataPK);
+								dataPK = new ArrayList<Object>();
+							}
+
+							for (int j = 0; j < receivedTable.size(); j++) {
+
+								// resultsTableModel.addRow(new Object[]
+								// {receivedTable.get(pk).toString()});
+							}
+						}
+					} catch (EOFException e1) {
+						// TODO Auto-generated catch block
+					}
+
+					System.out.println(receivedTable.toString());
+
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -324,7 +321,6 @@ public class RightSplit implements ActionListener {
 
 		}
 	}
-			
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

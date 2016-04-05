@@ -265,7 +265,7 @@ public class RightSplit implements ActionListener {
 
 					
 					
-					System.out.println(model.getCas().get);
+					System.out.println(model.getCas().toString());
 //					resultsTableModel = new DefaultTableModel(result_column_names, 0);
 //
 //					for (int i = 0; i < transactions.size(); i++) {

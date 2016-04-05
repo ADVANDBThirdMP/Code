@@ -31,13 +31,9 @@ public class RightSplit implements ActionListener {
 	private Object transaction_column_names[] = { "Transactions" };
 	private DefaultTableModel transactionsTableModel = new DefaultTableModel(transaction_column_names, 0);
 	private JScrollPane transactionsTablePane;
-	
-	// resultstable
-		private JTable resultTable = new JTable();
-		private Object result_column_names[] = { "No Transactions yet" };
-		private DefaultTableModel resultsTableModel = new DefaultTableModel(result_column_names, 0);
-		private JScrollPane resultsTablePane;
-	
+	private Object result_column_names[] = { "No Transactions yet" };
+	private DefaultTableModel resultsTableModel = new DefaultTableModel(result_column_names, 0);
+
 	// buttons
 	private final JButton btnCommit = new JButton("COMMIT");
 	private final JButton btnRollback = new JButton("ROLLBACK");
@@ -71,6 +67,7 @@ public class RightSplit implements ActionListener {
 	private HashMap<String, ArrayList> receivedTable;
 
 	private final HashMap<String, JTextArea> areas = new HashMap<String, JTextArea>();
+	private JTextArea txtResult;
 
 	public RightSplit(MainGUI mainGUI) throws Exception {
 
@@ -105,12 +102,6 @@ public class RightSplit implements ActionListener {
 		// populate transactions table based on transactions arraylist
 		populateTransactionsTable();
 
-		
-		resultTable.setModel(resultsTableModel);
-		resultsTablePane = new JScrollPane(resultTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
-		
 		btnAddTab.setBounds(805, 54, 115, 23);
 		btnDelTab.setBounds(805, 279, 251, 23);
 		jTabbedPane.setBounds(7, 33, 788, 235);
@@ -125,9 +116,6 @@ public class RightSplit implements ActionListener {
 		jPanel.add(btnCommit);
 		jPanel.add(jTabbedPane);
 
-		jPanel.add(resultsTablePane);
-		resultsTablePane.setBounds(10, 342, 1046, 247);
-		
 		jPanel.add(transactionsTablePane);
 		jPanel.add(transactionsTablePane, "cell 0 2 3 1,grow");
 
@@ -154,6 +142,10 @@ public class RightSplit implements ActionListener {
 		jMenuBar.add(file);
 		jMenuBar.add(transaction);
 		jMenuBar.add(run);
+
+		txtResult = new JTextArea();
+		txtResult.setBounds(17, 342, 1039, 247);
+		jPanel.add(txtResult);
 
 		btnAddTab.addActionListener(act);
 		btnDelTab.addActionListener(act);
@@ -243,18 +235,14 @@ public class RightSplit implements ActionListener {
 				System.out.println(
 						areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText().toString());
 
-				Model model = new Model();
-				model = null;
+				DataInputStream dataInputStream = null;
 
 				
 				try {
 					udpClient.handShakeAndGetQuery(
 							areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText());
-					model = udpClient.getTable();
+					dataInputStream = udpClient.getTable();
 
-					if(model == null){
-						System.out.println("BOOM NULL");;
-					}
 					System.out.println("COULMNS: " + udpClient.getColumnCount());
 					System.out.println("NAGHANDSHAKE BA: " + udpClient.getHandShake());
 
@@ -263,58 +251,61 @@ public class RightSplit implements ActionListener {
 					String pk = "";
 					ArrayList<Object> dataPK = new ArrayList<Object>();
 
-					
-					
-					System.out.println(model.getCas().get);
-//					resultsTableModel = new DefaultTableModel(result_column_names, 0);
-//
-//					for (int i = 0; i < transactions.size(); i++) {
-//						transactionsTableModel.addRow(new Object[] { transactions.get(i) });
-//					}
-//					transactionsTableModel.fireTableDataChanged();
-//
-//					transactionsTable.setModel(transactionsTableModel);
-//					transactionsTablePane.repaint();
-//					jPanel.repaint();
-//					jPanel.revalidate();
-//					
-//					try {
-//						txtResult.setText("");
-//						while (dataInputStream.available() > 0) {
-//
-//							String value = "";
-//
-//							if (i == 0) {
-//								pk = dataInputStream.readUTF();
-//								txtResult.append("\n");
-//								txtResult.append(String.format("%-25s\t" + " ", pk));
-//
-//							} else {
-//								value = dataInputStream.readUTF();
-//								dataPK.add(value);
-//								txtResult.append(String.format("%-25s\t" + " ", value));
-//
-//							}
-//
-//							i++;
-//							if (i == udpClient.getColumnCount()) {
-//								i = 0;
-//								receivedTable.put(pk, dataPK);
-//								dataPK = new ArrayList<Object>();
-//							}
-//
-//							for (int j = 0; j < receivedTable.size(); j++) {
-//
-//								// resultsTableModel.addRow(new Object[]
-//								// {receivedTable.get(pk).toString()});
-//							}
-//						}
-//					} catch (EOFException e1) {
-//						// TODO Auto-generated catch block
-//					}
-//
-//					System.out.println(receivedTable.toString());
-//
+					try {
+						txtResult.setText("");
+						while (dataInputStream.available() > 0) {
+
+							String value = "";
+
+							if (i == 0) {
+								pk = dataInputStream.readUTF();
+								txtResult.append("\n");
+								txtResult.append(String.format("%-25s\t" + " ", pk));
+
+							} else {
+								value = dataInputStream.readUTF();
+								dataPK.add(value);
+								txtResult.append(String.format("%-25s\t" + " ", value));
+
+							}
+
+							// HashMap<String, ArrayList> receivedTable = new
+							// HashMap<String, ArrayList>();
+
+							// receivedTable.put(pk, dataPK);
+
+							/*
+							 * for(int i = 1; i<=udpClient.getColumnCount()-1;
+							 * i++){ String body = dataInputStream.readUTF();
+							 * 
+							 * ArrayList<Object> dataBody = new
+							 * ArrayList<Object>(); dataBody.add(body);
+							 * receivedTable.put(pk, dataBody); }
+							 * 
+							 */
+							// for (int i = 0; i < products.size(); i++) {
+							// resultsTableModel.add((new Object[] {element});
+							// }
+
+							i++;
+							if (i == udpClient.getColumnCount()) {
+								i = 0;
+								receivedTable.put(pk, dataPK);
+								dataPK = new ArrayList<Object>();
+							}
+
+							for (int j = 0; j < receivedTable.size(); j++) {
+
+								// resultsTableModel.addRow(new Object[]
+								// {receivedTable.get(pk).toString()});
+							}
+						}
+					} catch (EOFException e1) {
+						// TODO Auto-generated catch block
+					}
+
+					System.out.println(receivedTable.toString());
+
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -324,7 +315,6 @@ public class RightSplit implements ActionListener {
 
 		}
 	}
-			
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

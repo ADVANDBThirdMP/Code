@@ -19,6 +19,7 @@ class UDPClient {
 	private DatagramPacket sendQueryInDataGramPacket;
 	private String queriedTableColumnCount;
 	private String handShake;
+	private Model queriedModel;
 	
 	public UDPClient() {
 
@@ -105,35 +106,20 @@ class UDPClient {
 		} catch (Exception e) {
 			System.out.println("Server is down");
 		}
-		//for the queried table column names
+		//for the queried table 
 		try {
 			clientSocket.receive(receivePacket);
+			queriedModel = new Model();
+			
+			ByteArrayInputStream in = new ByteArrayInputStream(receivePacket.getData());
+		    ObjectInputStream is = new ObjectInputStream(in);
+		    queriedModel = (Model) is.readObject();
+			
+		    
+		    System.out.println(queriedModel.getCas().toString());
 			if (receivePacket.getData() != null) {
 
-				ByteArrayInputStream queriedTableColumnNamesInBytes = new ByteArrayInputStream(receivePacket.getData());
-				in1 = new DataInputStream(queriedTableColumnNamesInBytes);
-//
-//				while (in.available() > 0) {
-//					String element = in.readUTF();
-//					System.out.println(element);
-//				}
-			}
-
-		} catch (Exception e) {
-			System.out.println("Server is down");
-		}
-		//for the queried table
-		try {
-			clientSocket.receive(receivePacket);
-			if (receivePacket.getData() != null) {
-
-				ByteArrayInputStream queriedTableInBytes = new ByteArrayInputStream(receivePacket.getData());
-				in1 = new DataInputStream(queriedTableInBytes);
-//
-//				while (in.available() > 0) {
-//					String element = in.readUTF();
-//					System.out.println(element);
-//				}
+				
 			}
 
 		} catch (Exception e) {
@@ -143,8 +129,8 @@ class UDPClient {
 		
 	}
 	
-	public DataInputStream getTable(){
-		return in;
+	public Model getTable(){
+		return queriedModel;
 	}
 
 
@@ -158,7 +144,5 @@ class UDPClient {
 		return handShake;
 	}
 	
-	public DataInputStream getTableColumnNames(){
-		return in1;
-	}
+	
 }
