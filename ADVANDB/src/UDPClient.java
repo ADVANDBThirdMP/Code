@@ -15,12 +15,14 @@ class UDPClient {
 	private DataInputStream in;
 
 	private DatagramPacket sendQueryInDataGramPacket;
+	private String queriedTableColumnCount;
+	private String handShake;
 	
 	public UDPClient() {
 
 	}
 
-	public DataInputStream handShakeAndGetQuery(String query) throws Exception {
+	public void handShakeAndGetQuery(String query) throws Exception {
 		System.out.println("App started");
 		// Gets input from user
 		
@@ -33,10 +35,6 @@ class UDPClient {
 		byte[] sendQueryToServer = new byte[1024];
 		byte[] receiveData = new byte[1024];
 
-		
-		
-		
-		
 		// loop para paulit ulit
 		// do {
 
@@ -50,12 +48,11 @@ class UDPClient {
 		// Waits for reply/acknowledgement from server
 		receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
-		DataInputStream inputStream = null;
 		
 		try {
 
 			//passes receivePacket
-			inputStream = commitQuery();
+		commitQuery();
 
 		} catch (SocketTimeoutException e) {
 			e.printStackTrace();
@@ -66,9 +63,7 @@ class UDPClient {
 		// } while (!sentence.equals("stop"));
 
 		clientSocket.close();
-		
-		return inputStream;
-		
+				
 		
 		
 	}
@@ -82,12 +77,12 @@ class UDPClient {
 		//for handshake
 		try {
 			clientSocket.receive(receivePacket);
-			String handshake = new String(receivePacket.getData());
+			handShake = new String(receivePacket.getData());
 			System.out.println("shit");
 
 
 			if (receivePacket.getData() != null) {
-				System.out.println("Server accepted handshake:" + handshake);
+				System.out.println("Server accepted handshake:" + handShake);
 			}
 			System.out.println("Server is up");
 		} catch (Exception e) {
@@ -97,14 +92,14 @@ class UDPClient {
 		//for size of queried table column count
 		try {
 			clientSocket.receive(receivePacket);
-			String queriedTableColumnCount = new String(receivePacket.getData());
+			queriedTableColumnCount = new String(receivePacket.getData()/*, 0, receivePacket.getLength()*/);
 
+			
+			
 			if (receivePacket.getData() != null) {
 				System.out.println("Size" + queriedTableColumnCount);
 			}
 			
-			
-			System.out.println("Server is up");
 		} catch (Exception e) {
 			System.out.println("Server is down");
 		}
@@ -122,7 +117,6 @@ class UDPClient {
 //					System.out.println(element);
 //				}
 			}
-			System.out.println("Server is up");
 
 		} catch (Exception e) {
 			System.out.println("Server is down");
@@ -131,5 +125,16 @@ class UDPClient {
 	
 	public DataInputStream getTable(){
 		return in;
+	}
+
+
+	public int getColumnCount(){
+		String str = queriedTableColumnCount.replaceAll("\\D+","");
+		return Integer.parseInt(str);
+	}
+	
+	
+	public String getHandShake(){
+		return handShake;
 	}
 }

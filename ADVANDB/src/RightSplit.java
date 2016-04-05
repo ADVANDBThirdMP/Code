@@ -246,6 +246,9 @@ public class RightSplit implements ActionListener {
 							areas.get(jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())).getText());
 					dataInputStream = udpClient.getTable();
 					
+					System.out.println("COULMNS: " + udpClient.getColumnCount());
+					System.out.println("NAGHANDSHAKE BA: "+ udpClient.getHandShake());
+					
 					try {
 						while (dataInputStream.available() > 0) {
 							String element = dataInputStream.readUTF();

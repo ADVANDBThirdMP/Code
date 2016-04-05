@@ -8,7 +8,7 @@ import javax.sql.rowset.CachedRowSet;
 
 import com.sun.rowset.CachedRowSetImpl;
 
-class UDPServer{
+class UDPServer {
 
 	private DBConnect db = new DBConnect();
 	private DatagramSocket serverSocket;
@@ -16,39 +16,28 @@ class UDPServer{
 	private byte[] sendResultSet = new byte[1024];
 	private byte[] sendHandShake = new byte[1024];
 	private byte[] sendColumnCount = new byte[1024];
-	
+
 	private String nothing;
 	private DatagramPacket receivePacket;
 
-	public UDPServer() throws Exception{
+	public UDPServer() throws Exception {
 		// Creates a socket for receiving packets
 		serverSocket = new DatagramSocket(9876);
 		receivePacket = new DatagramPacket(receiveData, receiveData.length);
 		OpenServer();
 	}
-	
-	public void OpenServer() throws Exception{
-		while(true)
-		{
-			
-			
-			
+
+	public void OpenServer() throws Exception {
+		while (true) {
+
 			// Created socket receives packet and execute query
 			serverSocket.receive(receivePacket);
-						
-			String queryFromClient = new String(receivePacket.getData(), 0, receivePacket.getLength());
-			System.out.println("Yung putang query: " + queryFromClient);
-			
-			if(queryFromClient.equals("select max(id) from hpq_alp")){
-				System.out.println("magkamuka sila");
-			}
-			else
-				System.out.println("di sila magkamuka");
 
-				
-//			queryFromClient = "Select max(id) from hpq_alp";
+			String queryFromClient = new String(receivePacket.getData(), 0, receivePacket.getLength());
+
+			// queryFromClient = "Select max(id) from hpq_alp";
 			ResultSet resultSet = db.executeQuery(queryFromClient);
-			
+
 			System.out.println("result in udp server" + resultSet);
 
 			// Using received packet I get address and port number
@@ -59,6 +48,22 @@ class UDPServer{
 			String sendBackHandshake = "I accepted handshake";
 			sendHandShake = sendBackHandshake.getBytes();
 
+			
+
+			// gives back the resultset to client
+			ResultSetMetaData rsmd = resultSet.getMetaData();
+
+			sendColumnCount = null;
+			String columnCount = Integer.toString(rsmd.getColumnCount());
+
+			
+			
+			
+			sendColumnCount = (columnCount.getBytes());
+			//dito nagawa yung dump na di elegant
+
+
+			
 			ResultSetMetaData metadata = resultSet.getMetaData();
 			int numberOfColumns = metadata.getColumnCount();
 
@@ -70,13 +75,6 @@ class UDPServer{
 				}
 			}
 
-			// gives back the resultset to client
-			ResultSetMetaData rsmd = resultSet.getMetaData();
-
-			String columnCount = Integer.toString(rsmd.getColumnCount());
-			sendColumnCount = columnCount.getBytes();
-
-		
 			// write to byte array
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			DataOutputStream out = new DataOutputStream(baos);
@@ -95,8 +93,7 @@ class UDPServer{
 			DatagramPacket returnResultSetArrayinBytes = new DatagramPacket(bytes, bytes.length, IPAddress, port);
 			serverSocket.send(returnResultSetArrayinBytes);
 
-
 		}
 	}
 
-	}
+}
